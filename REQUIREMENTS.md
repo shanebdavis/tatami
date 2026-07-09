@@ -1,0 +1,96 @@
+# Shane-Divvy — Requirements
+
+A modern, native macOS replacement for [Divvy](https://mizage.com/divvy/): a menu-bar-only utility that lays out the currently focused window on a screen grid, driven entirely by keyboard shortcuts. Divvy is unmaintained, Intel-era, and its OS-level keyboard shortcuts no longer work reliably; this app replaces the subset of Divvy actually used, and nothing more.
+
+## Goals
+
+- Instant, keyboard-driven window layout on a configurable grid
+- Feels native and current: Apple Silicon, Swift, modern macOS APIs
+- Zero ceremony: lives as a menu bar icon, no Dock icon, no windows unless summoned
+
+## Non-Goals
+
+- Mac App Store distribution (Accessibility permission precludes sandboxing)
+- Window management beyond grid placement (no tiling automation, no window tracking, no drag-to-edge snapping)
+- Mouse-first workflows; the mouse works in the grid panel, but keyboard is the primary interface
+
+## Core Features
+
+### F1. Global hotkey → grid panel
+
+A single user-configurable global hotkey summons the **grid panel**, targeting whichever window currently has focus.
+
+- The panel appears on the screen containing the focused window
+- The panel displays the focused app's icon and name (as Divvy does), so it is unambiguous which window will move
+- The panel shows an N×M grid of cells (default 6×5, configurable)
+- **Click-drag** across cells selects a rectangular region; on mouse-up, the focused window is moved/resized to that region and the panel dismisses
+- While dragging, a translucent live preview shows the target frame on the actual screen behind the panel
+- **Escape** or clicking outside the grid dismisses the panel without acting
+- The panel must not steal focus from the target window (non-activating panel), so the "focused window" remains well-defined
+
+### F2. Grid doubling
+
+While the grid panel is open, a toggle (keypress, e.g. `space`) doubles the grid resolution in both dimensions (6×5 → 12×10) for finer placement. Toggling again returns to the base grid. The doubled state is transient — the panel always opens at the base grid size.
+
+### F3. Preset layout shortcuts
+
+Any number of additional global shortcuts, each bound to a **saved grid region**, that lay out the focused window instantly with no UI shown.
+
+- A saved layout is a grid region (e.g. "columns 1–3 of 6, all 5 rows"), **not** absolute pixels — layouts are resolution-independent and apply correctly on any monitor
+- Pressing a preset shortcut resolves the region against the screen containing the focused window and moves it immediately
+
+### F4. Configuration window
+
+Opened from the menu bar icon. Contains:
+
+- **Shortcuts list** — one row per preset: a shortcut recorder control, a thumbnail of the saved grid region, and a delete button. An "add" button creates a new preset
+- **Region picker** — defining/editing a preset's region reuses the same grid-selection UX as the interactive panel (F1), in "define a region" mode
+- **General settings** — the summon hotkey (F1), base grid dimensions (rows × columns), launch at login
+
+### F5. Menu bar presence
+
+- Status item in the menu bar; no Dock icon (`LSUIElement`)
+- Menu: open grid panel, open settings, launch-at-login toggle, quit
+
+## Functional Requirements
+
+- **FR1** Window placement uses the target screen's *visible frame* (excludes menu bar, Dock, notch inset)
+- **FR2** Multi-monitor: grid math is per-screen; the target screen is the one containing the focused window
+- **FR3** Coordinate conversion between Accessibility (top-left origin) and AppKit (bottom-left origin) must be correct across all monitor arrangements
+- **FR4** Apps that clamp or resist resizing (Electron apps, fixed-min-size windows) get the set-size → set-position → set-size retry dance; failures are silent but non-destructive
+- **FR5** First launch detects missing Accessibility permission and walks the user to System Settings (`AXIsProcessTrustedWithOptions` with prompt); all features degrade gracefully until granted
+- **FR6** Presets and settings persist across launches (Codable structs in `UserDefaults`; no database)
+- **FR7** Shortcut conflicts (two presets, or a preset vs. the summon key) are prevented or clearly surfaced in the config UI
+
+## Technical Requirements
+
+- **Language/UI:** Swift 6, SwiftUI where practical (`MenuBarExtra`, settings window), AppKit for the overlay panel (`NSPanel`, non-activating, borderless)
+- **Window control:** Accessibility API (`AXUIElement` — `AXFocusedWindow`, `AXPosition`, `AXSize`). No private APIs
+- **Hotkeys:** Carbon `RegisterEventHotKey` via the [`KeyboardShortcuts`](https://github.com/sindresorhus/KeyboardShortcuts) SPM package (also provides the recorder UI control). No Input Monitoring permission required
+- **Target:** macOS 15+, Apple Silicon native (universal binary optional)
+- **Dependencies:** `KeyboardShortcuts` only
+- **Distribution:** direct `.app`; signed + notarized if shared beyond this machine; not sandboxed
+
+## Architecture Sketch
+
+| Module | Responsibility | Est. size |
+|---|---|---|
+| `WindowManager` | AX wrapper: focused window, set frame, coordinate conversion | ~150 lines |
+| `GridPanel` | Overlay panel: grid render, drag-select, double toggle, preview, dismiss | ~300 lines |
+| `ShortcutStore` | Codable presets, hotkey registration/dispatch | ~100 lines |
+| `SettingsView` | Config window: presets list, recorder controls, region picker | ~250 lines |
+| `App` | `MenuBarExtra` glue, permission onboarding, launch at login | ~50 lines |
+
+## Milestones
+
+1. **Spike** — one hardcoded hotkey snaps the focused window to the left half of its screen. Validates permissions, AX, and coordinate math end to end
+2. **MVP** — grid panel with drag-select placement (F1)
+3. **Full grid UX** — double toggle, app icon/name, multi-monitor correctness (F2, FR1–FR3)
+4. **Presets** — saved layouts with custom shortcuts and config UI (F3, F4)
+5. **Polish** — permission onboarding, launch at login, stubborn-app retries, animations (F5, FR4, FR5)
+
+## Open Questions
+
+- Should the grid panel also be summonable per-preset-editing from the settings window, or is the inline picker enough? (Assumed: inline picker reuses the same view)
+- Default base grid: Divvy's default is 6×5 — keep it? (Assumed: yes)
+- Should a second press of the summon hotkey while the panel is open dismiss it? (Assumed: yes)
