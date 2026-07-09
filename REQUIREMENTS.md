@@ -14,9 +14,10 @@ This is not a once-a-day setup chore. It's a rapid-fire, repeated action perform
 
 ## Goals
 
+- **A native macOS app, written in Swift** — no Electron, no cross-platform framework, no web tech
 - Instant, keyboard-driven window layout on a configurable grid
 - Fast enough to invoke dozens of times a day without friction
-- Feels native and current: Apple Silicon, Swift, modern macOS APIs
+- Feels native and current: Apple Silicon, modern macOS APIs
 - Zero ceremony: lives as a menu bar icon, no Dock icon, no windows unless summoned
 - Trivial to build in Xcode and drop into `/Applications`
 
