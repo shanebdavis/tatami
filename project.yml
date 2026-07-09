@@ -1,0 +1,23 @@
+name: ShaneDivvy
+options:
+  bundleIdPrefix: com.kaiizen
+  deploymentTarget:
+    macOS: "15.0"
+targets:
+  ShaneDivvy:
+    type: application
+    platform: macOS
+    sources:
+      - Sources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.kaiizen.ShaneDivvy
+        MARKETING_VERSION: 0.1.0
+        CURRENT_PROJECT_VERSION: 1
+        SWIFT_VERSION: "6.0"
+        GENERATE_INFOPLIST_FILE: true
+        INFOPLIST_KEY_LSUIElement: true
+        INFOPLIST_KEY_NSHumanReadableCopyright: ""
+        CODE_SIGN_STYLE: Automatic
+        CODE_SIGN_IDENTITY: "-"
+        ENABLE_HARDENED_RUNTIME: false
