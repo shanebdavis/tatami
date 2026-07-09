@@ -1,16 +1,28 @@
 # Shane-Divvy — Requirements
 
-A modern, native macOS replacement for [Divvy](https://mizage.com/divvy/): a menu-bar-only utility that lays out the currently focused window on a screen grid, driven entirely by keyboard shortcuts. Divvy is unmaintained, Intel-era, and its OS-level keyboard shortcuts no longer work reliably; this app replaces the subset of Divvy actually used, and nothing more.
+## Why
+
+**Make laying out windows so fast and easy that working on a single MacBook screen feels like having a wall of large monitors in front of you.**
+
+The screen is a limited window onto everything you're working with. The way to reclaim that flexibility is to get exactly the right windows in front of you at the moment you need them — often two or three side by side in a clean layout so you can see and compare all the information a task requires, simultaneously.
+
+This is not a once-a-day setup chore. It's a rapid-fire, repeated action performed every 5–15 minutes, all workday long, as tasks shift. That drives the guiding principle:
+
+> **Fast, easy window layout, over and over again** — get the right information on screen the instant it's needed, with near-zero friction and near-zero thought.
+
+[Divvy](https://mizage.com/divvy/) solved this well: summon a grid with a hotkey, paint the region where the focused window should go, done. But Divvy is unmaintained Intel-era code and its OS-level keyboard shortcuts no longer work reliably. This app replicates Divvy's solution in a modern, working, native form — taking cues from Divvy initially, with room to go beyond it later.
 
 ## Goals
 
 - Instant, keyboard-driven window layout on a configurable grid
+- Fast enough to invoke dozens of times a day without friction
 - Feels native and current: Apple Silicon, Swift, modern macOS APIs
 - Zero ceremony: lives as a menu bar icon, no Dock icon, no windows unless summoned
+- Trivial to build in Xcode and drop into `/Applications`
 
 ## Non-Goals
 
-- Mac App Store distribution (Accessibility permission precludes sandboxing)
+- Public distribution or the Mac App Store — this is for personal use and possibly the team; open-sourcing later is an option, publishing is not the goal (Accessibility permission precludes sandboxing anyway)
 - Window management beyond grid placement (no tiling automation, no window tracking, no drag-to-edge snapping)
 - Mouse-first workflows; the mouse works in the grid panel, but keyboard is the primary interface
 
@@ -69,7 +81,7 @@ Opened from the menu bar icon. Contains:
 - **Hotkeys:** Carbon `RegisterEventHotKey` via the [`KeyboardShortcuts`](https://github.com/sindresorhus/KeyboardShortcuts) SPM package (also provides the recorder UI control). No Input Monitoring permission required
 - **Target:** macOS 15+, Apple Silicon native (universal binary optional)
 - **Dependencies:** `KeyboardShortcuts` only
-- **Distribution:** direct `.app`; signed + notarized if shared beyond this machine; not sandboxed
+- **Distribution:** build in Xcode, copy the `.app` to `/Applications`. Local signing is fine for personal use; ad-hoc or Developer ID signing only if shared with the team. Not sandboxed, not notarized, no update mechanism
 
 ## Architecture Sketch
 
