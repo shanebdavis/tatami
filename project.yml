@@ -3,12 +3,18 @@ options:
   bundleIdPrefix: com.kaiizen
   deploymentTarget:
     macOS: "15.0"
+packages:
+  KeyboardShortcuts:
+    url: https://github.com/sindresorhus/KeyboardShortcuts
+    from: 2.0.0
 targets:
   ShaneDivvy:
     type: application
     platform: macOS
     sources:
       - Sources
+    dependencies:
+      - package: KeyboardShortcuts
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.kaiizen.ShaneDivvy

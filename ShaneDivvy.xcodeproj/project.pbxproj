@@ -8,18 +8,36 @@
 
 /* Begin PBXBuildFile section */
 		1457C04CD387568DA1D944D6 /* ShaneDivvyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1FCC3702BFE70D45CC2F3C0 /* ShaneDivvyApp.swift */; };
+		67900B9094643949CD6E3A99 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 704DB774E6ABC2B1C6F83DAF /* KeyboardShortcuts */; };
+		880D6835C886C1D818F69222 /* HUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E52D089B864628081126C75 /* HUD.swift */; };
+		995B68388F577E728792AEFD /* Shortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5112FA1DF7752F27D446BEBC /* Shortcuts.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5112FA1DF7752F27D446BEBC /* Shortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shortcuts.swift; sourceTree = "<group>"; };
+		9E52D089B864628081126C75 /* HUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUD.swift; sourceTree = "<group>"; };
 		9EB5683BB857EAB699316BAA /* ShaneDivvy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShaneDivvy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1FCC3702BFE70D45CC2F3C0 /* ShaneDivvyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShaneDivvyApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		40729BE66AF81029703D884A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				67900B9094643949CD6E3A99 /* KeyboardShortcuts in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		CBFFA0FAF821271C3D6BEF34 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				9E52D089B864628081126C75 /* HUD.swift */,
 				F1FCC3702BFE70D45CC2F3C0 /* ShaneDivvyApp.swift */,
+				5112FA1DF7752F27D446BEBC /* Shortcuts.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -48,6 +66,7 @@
 			buildConfigurationList = F77D2306597A4CB9F578E654 /* Build configuration list for PBXNativeTarget "ShaneDivvy" */;
 			buildPhases = (
 				B82E9CD6C4C77290C1622398 /* Sources */,
+				40729BE66AF81029703D884A /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -55,6 +74,7 @@
 			);
 			name = ShaneDivvy;
 			packageProductDependencies = (
+				704DB774E6ABC2B1C6F83DAF /* KeyboardShortcuts */,
 			);
 			productName = ShaneDivvy;
 			productReference = 9EB5683BB857EAB699316BAA /* ShaneDivvy.app */;
@@ -83,6 +103,9 @@
 			);
 			mainGroup = D4DFD9BAC5237F925748E2D3;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				20415A196E3815BE46B82837 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D8B05B22D196F6CD808B1EB5 /* Products */;
 			projectDirPath = "";
@@ -98,7 +121,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				880D6835C886C1D818F69222 /* HUD.swift in Sources */,
 				1457C04CD387568DA1D944D6 /* ShaneDivvyApp.swift in Sources */,
+				995B68388F577E728792AEFD /* Shortcuts.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,6 +317,25 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		20415A196E3815BE46B82837 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sindresorhus/KeyboardShortcuts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		704DB774E6ABC2B1C6F83DAF /* KeyboardShortcuts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 20415A196E3815BE46B82837 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;
+			productName = KeyboardShortcuts;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E31E0B0B22D2A4E0E8EEE476 /* Project object */;
 }
