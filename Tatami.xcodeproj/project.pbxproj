@@ -7,20 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		05507049BEEFBB9E1C2F759F /* GridRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E10B86051D7EEF50F6BABA /* GridRegion.swift */; };
 		770A98DE68E420EBECB3F018 /* Shortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197ADE0896C608F1274BB07D /* Shortcuts.swift */; };
 		7AF894E9A39C291839CBABD8 /* TatamiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5E0B5C53363C65188E3B52 /* TatamiApp.swift */; };
-		845AA192768E3429E4B589B9 /* LayoutActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C53DAB0912D2FA2E62CC572 /* LayoutActions.swift */; };
+		806944012410E5A91F3D3F43 /* GridPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF63AE98FA660D69BFE7D47 /* GridPanelView.swift */; };
 		86C71BBF2C263F99A6C7C3BE /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 240717894B3D857E7AA3F160 /* KeyboardShortcuts */; };
+		92F22F34230E37BA02ACE574 /* GridPanelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80519AD547085D61C63B335E /* GridPanelController.swift */; };
 		9D61EE39EBEA48C853FC9AEE /* HUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE5DDD904E335F119AFD52EF /* HUD.swift */; };
 		AAE9B71577DDB5EFCA5A94E4 /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BC4EAA5F684A7C803A4DE9B /* WindowManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		00E10B86051D7EEF50F6BABA /* GridRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridRegion.swift; sourceTree = "<group>"; };
 		197ADE0896C608F1274BB07D /* Shortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shortcuts.swift; sourceTree = "<group>"; };
 		1F1DC872C75B96AAEBF30600 /* Tatami.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tatami.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A5E0B5C53363C65188E3B52 /* TatamiApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TatamiApp.swift; sourceTree = "<group>"; };
 		6BC4EAA5F684A7C803A4DE9B /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
-		9C53DAB0912D2FA2E62CC572 /* LayoutActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutActions.swift; sourceTree = "<group>"; };
+		80519AD547085D61C63B335E /* GridPanelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridPanelController.swift; sourceTree = "<group>"; };
+		9DF63AE98FA660D69BFE7D47 /* GridPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridPanelView.swift; sourceTree = "<group>"; };
 		BE5DDD904E335F119AFD52EF /* HUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUD.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -39,8 +43,10 @@
 		3C25564AEBE8E65B31A25EA4 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				80519AD547085D61C63B335E /* GridPanelController.swift */,
+				9DF63AE98FA660D69BFE7D47 /* GridPanelView.swift */,
+				00E10B86051D7EEF50F6BABA /* GridRegion.swift */,
 				BE5DDD904E335F119AFD52EF /* HUD.swift */,
-				9C53DAB0912D2FA2E62CC572 /* LayoutActions.swift */,
 				197ADE0896C608F1274BB07D /* Shortcuts.swift */,
 				6A5E0B5C53363C65188E3B52 /* TatamiApp.swift */,
 				6BC4EAA5F684A7C803A4DE9B /* WindowManager.swift */,
@@ -127,8 +133,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				92F22F34230E37BA02ACE574 /* GridPanelController.swift in Sources */,
+				806944012410E5A91F3D3F43 /* GridPanelView.swift in Sources */,
+				05507049BEEFBB9E1C2F759F /* GridRegion.swift in Sources */,
 				9D61EE39EBEA48C853FC9AEE /* HUD.swift in Sources */,
-				845AA192768E3429E4B589B9 /* LayoutActions.swift in Sources */,
 				770A98DE68E420EBECB3F018 /* Shortcuts.swift in Sources */,
 				7AF894E9A39C291839CBABD8 /* TatamiApp.swift in Sources */,
 				AAE9B71577DDB5EFCA5A94E4 /* WindowManager.swift in Sources */,

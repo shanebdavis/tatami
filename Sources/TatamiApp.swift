@@ -10,14 +10,14 @@ struct TatamiApp: App {
             WindowManager.requestAccessibilityPermission()
         }
         KeyboardShortcuts.onKeyDown(for: .summonGrid) {
-            LayoutActions.snapFocusedWindowToLeftHalf()
+            GridPanelController.shared.toggle()
         }
     }
 
     var body: some Scene {
         MenuBarExtra("Tatami", systemImage: "rectangle.split.3x3") {
-            Text("Tatami v0.1 — Phase 3")
-            Text("⌃⌥⌘Space: snap window to left half")
+            Text("Tatami v0.1 — Phase 4")
+            Text("⌃⌥⌘Space: lay out focused window")
             Divider()
             Button("Quit Tatami") {
                 NSApp.terminate(nil)
