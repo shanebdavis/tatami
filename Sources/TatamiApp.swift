@@ -2,7 +2,7 @@ import KeyboardShortcuts
 import SwiftUI
 
 @main
-struct ShaneDivvyApp: App {
+struct TatamiApp: App {
     init() {
         // Trigger the system permission prompt on first launch rather than
         // surprising the user on first hotkey press.
@@ -15,11 +15,11 @@ struct ShaneDivvyApp: App {
     }
 
     var body: some Scene {
-        MenuBarExtra("Shane Divvy", systemImage: "rectangle.split.3x3") {
-            Text("Shane Divvy v0.1 — Phase 3")
+        MenuBarExtra("Tatami", systemImage: "rectangle.split.3x3") {
+            Text("Tatami v0.1 — Phase 3")
             Text("⌃⌥⌘Space: snap window to left half")
             Divider()
-            Button("Quit Shane Divvy") {
+            Button("Quit Tatami") {
                 NSApp.terminate(nil)
             }
             .keyboardShortcut("q")

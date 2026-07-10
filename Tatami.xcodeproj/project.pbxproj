@@ -7,240 +7,138 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1457C04CD387568DA1D944D6 /* ShaneDivvyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1FCC3702BFE70D45CC2F3C0 /* ShaneDivvyApp.swift */; };
-		67900B9094643949CD6E3A99 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 704DB774E6ABC2B1C6F83DAF /* KeyboardShortcuts */; };
-		880D6835C886C1D818F69222 /* HUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E52D089B864628081126C75 /* HUD.swift */; };
-		995B68388F577E728792AEFD /* Shortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5112FA1DF7752F27D446BEBC /* Shortcuts.swift */; };
-		E978870710930D16952476E7 /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C343F4E217F46390F2E591A4 /* WindowManager.swift */; };
-		F23B6E880E3A7A139F6B7209 /* LayoutActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C666E6409B6FAAFF9A6E34CA /* LayoutActions.swift */; };
+		770A98DE68E420EBECB3F018 /* Shortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197ADE0896C608F1274BB07D /* Shortcuts.swift */; };
+		7AF894E9A39C291839CBABD8 /* TatamiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5E0B5C53363C65188E3B52 /* TatamiApp.swift */; };
+		845AA192768E3429E4B589B9 /* LayoutActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C53DAB0912D2FA2E62CC572 /* LayoutActions.swift */; };
+		86C71BBF2C263F99A6C7C3BE /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 240717894B3D857E7AA3F160 /* KeyboardShortcuts */; };
+		9D61EE39EBEA48C853FC9AEE /* HUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE5DDD904E335F119AFD52EF /* HUD.swift */; };
+		AAE9B71577DDB5EFCA5A94E4 /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BC4EAA5F684A7C803A4DE9B /* WindowManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		5112FA1DF7752F27D446BEBC /* Shortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shortcuts.swift; sourceTree = "<group>"; };
-		9E52D089B864628081126C75 /* HUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUD.swift; sourceTree = "<group>"; };
-		9EB5683BB857EAB699316BAA /* ShaneDivvy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShaneDivvy.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		C343F4E217F46390F2E591A4 /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
-		C666E6409B6FAAFF9A6E34CA /* LayoutActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutActions.swift; sourceTree = "<group>"; };
-		F1FCC3702BFE70D45CC2F3C0 /* ShaneDivvyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShaneDivvyApp.swift; sourceTree = "<group>"; };
+		197ADE0896C608F1274BB07D /* Shortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shortcuts.swift; sourceTree = "<group>"; };
+		1F1DC872C75B96AAEBF30600 /* Tatami.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tatami.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6A5E0B5C53363C65188E3B52 /* TatamiApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TatamiApp.swift; sourceTree = "<group>"; };
+		6BC4EAA5F684A7C803A4DE9B /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
+		9C53DAB0912D2FA2E62CC572 /* LayoutActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutActions.swift; sourceTree = "<group>"; };
+		BE5DDD904E335F119AFD52EF /* HUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUD.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		40729BE66AF81029703D884A /* Frameworks */ = {
+		E69315FDF599F78E9CF5735F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				67900B9094643949CD6E3A99 /* KeyboardShortcuts in Frameworks */,
+				86C71BBF2C263F99A6C7C3BE /* KeyboardShortcuts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		CBFFA0FAF821271C3D6BEF34 /* Sources */ = {
+		3C25564AEBE8E65B31A25EA4 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				9E52D089B864628081126C75 /* HUD.swift */,
-				C666E6409B6FAAFF9A6E34CA /* LayoutActions.swift */,
-				F1FCC3702BFE70D45CC2F3C0 /* ShaneDivvyApp.swift */,
-				5112FA1DF7752F27D446BEBC /* Shortcuts.swift */,
-				C343F4E217F46390F2E591A4 /* WindowManager.swift */,
+				BE5DDD904E335F119AFD52EF /* HUD.swift */,
+				9C53DAB0912D2FA2E62CC572 /* LayoutActions.swift */,
+				197ADE0896C608F1274BB07D /* Shortcuts.swift */,
+				6A5E0B5C53363C65188E3B52 /* TatamiApp.swift */,
+				6BC4EAA5F684A7C803A4DE9B /* WindowManager.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
 		};
-		D4DFD9BAC5237F925748E2D3 = {
+		406AF31CFC46E1944BB1400C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				CBFFA0FAF821271C3D6BEF34 /* Sources */,
-				D8B05B22D196F6CD808B1EB5 /* Products */,
-			);
-			sourceTree = "<group>";
-		};
-		D8B05B22D196F6CD808B1EB5 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				9EB5683BB857EAB699316BAA /* ShaneDivvy.app */,
+				1F1DC872C75B96AAEBF30600 /* Tatami.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		A7378DA067D6A4EB8EDAC990 = {
+			isa = PBXGroup;
+			children = (
+				3C25564AEBE8E65B31A25EA4 /* Sources */,
+				406AF31CFC46E1944BB1400C /* Products */,
+			);
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		877ABDD5232A162E9150DB77 /* ShaneDivvy */ = {
+		E6DF933D1FBE98F7BD191271 /* Tatami */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F77D2306597A4CB9F578E654 /* Build configuration list for PBXNativeTarget "ShaneDivvy" */;
+			buildConfigurationList = 50BD1F8874248DB3EA611960 /* Build configuration list for PBXNativeTarget "Tatami" */;
 			buildPhases = (
-				B82E9CD6C4C77290C1622398 /* Sources */,
-				40729BE66AF81029703D884A /* Frameworks */,
+				800E9E7A78EBD0D58413C11C /* Sources */,
+				E69315FDF599F78E9CF5735F /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = ShaneDivvy;
+			name = Tatami;
 			packageProductDependencies = (
-				704DB774E6ABC2B1C6F83DAF /* KeyboardShortcuts */,
+				240717894B3D857E7AA3F160 /* KeyboardShortcuts */,
 			);
-			productName = ShaneDivvy;
-			productReference = 9EB5683BB857EAB699316BAA /* ShaneDivvy.app */;
+			productName = Tatami;
+			productReference = 1F1DC872C75B96AAEBF30600 /* Tatami.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		E31E0B0B22D2A4E0E8EEE476 /* Project object */ = {
+		6576996440293AD3D9A47631 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
-					877ABDD5232A162E9150DB77 = {
+					E6DF933D1FBE98F7BD191271 = {
 						ProvisioningStyle = Automatic;
 					};
 				};
 			};
-			buildConfigurationList = 7E85C12B51E4710979ABFF3E /* Build configuration list for PBXProject "ShaneDivvy" */;
+			buildConfigurationList = A8A224BD0F7457AB2DD60A42 /* Build configuration list for PBXProject "Tatami" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				Base,
 				en,
 			);
-			mainGroup = D4DFD9BAC5237F925748E2D3;
+			mainGroup = A7378DA067D6A4EB8EDAC990;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				20415A196E3815BE46B82837 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
+				4AEEC1F92A1EBDB3E4FD3545 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
 			);
 			preferredProjectObjectVersion = 77;
-			productRefGroup = D8B05B22D196F6CD808B1EB5 /* Products */;
+			productRefGroup = 406AF31CFC46E1944BB1400C /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				877ABDD5232A162E9150DB77 /* ShaneDivvy */,
+				E6DF933D1FBE98F7BD191271 /* Tatami */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		B82E9CD6C4C77290C1622398 /* Sources */ = {
+		800E9E7A78EBD0D58413C11C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				880D6835C886C1D818F69222 /* HUD.swift in Sources */,
-				F23B6E880E3A7A139F6B7209 /* LayoutActions.swift in Sources */,
-				1457C04CD387568DA1D944D6 /* ShaneDivvyApp.swift in Sources */,
-				995B68388F577E728792AEFD /* Shortcuts.swift in Sources */,
-				E978870710930D16952476E7 /* WindowManager.swift in Sources */,
+				9D61EE39EBEA48C853FC9AEE /* HUD.swift in Sources */,
+				845AA192768E3429E4B589B9 /* LayoutActions.swift in Sources */,
+				770A98DE68E420EBECB3F018 /* Shortcuts.swift in Sources */,
+				7AF894E9A39C291839CBABD8 /* TatamiApp.swift in Sources */,
+				AAE9B71577DDB5EFCA5A94E4 /* WindowManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		0727CA80A72C3376F345A4DF /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				MTL_FAST_MATH = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 5.0;
-			};
-			name = Release;
-		};
-		3629FE92C4271DE510F99F5E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				ENABLE_HARDENED_RUNTIME = NO;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_LSUIElement = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MARKETING_VERSION = 0.1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kaiizen.ShaneDivvy;
-				SDKROOT = macosx;
-				SWIFT_VERSION = 6.0;
-			};
-			name = Debug;
-		};
-		4236BDE87C95AD09223CE56B /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				ENABLE_HARDENED_RUNTIME = NO;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_LSUIElement = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MARKETING_VERSION = 0.1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kaiizen.ShaneDivvy;
-				SDKROOT = macosx;
-				SWIFT_VERSION = 6.0;
-			};
-			name = Release;
-		};
-		F75A4AB17C17BC237EDEABF5 /* Debug */ = {
+		0865A8D999CAC753239B851E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -303,23 +201,125 @@
 			};
 			name = Debug;
 		};
+		49AADDA635D58EB550310F3F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_HARDENED_RUNTIME = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kaiizen.Tatami;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		CDEBE98EE3E24FB1AAF53497 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		EA839FADD8DA5380513C2EE5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_HARDENED_RUNTIME = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kaiizen.Tatami;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		7E85C12B51E4710979ABFF3E /* Build configuration list for PBXProject "ShaneDivvy" */ = {
+		50BD1F8874248DB3EA611960 /* Build configuration list for PBXNativeTarget "Tatami" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				F75A4AB17C17BC237EDEABF5 /* Debug */,
-				0727CA80A72C3376F345A4DF /* Release */,
+				EA839FADD8DA5380513C2EE5 /* Debug */,
+				49AADDA635D58EB550310F3F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		F77D2306597A4CB9F578E654 /* Build configuration list for PBXNativeTarget "ShaneDivvy" */ = {
+		A8A224BD0F7457AB2DD60A42 /* Build configuration list for PBXProject "Tatami" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				3629FE92C4271DE510F99F5E /* Debug */,
-				4236BDE87C95AD09223CE56B /* Release */,
+				0865A8D999CAC753239B851E /* Debug */,
+				CDEBE98EE3E24FB1AAF53497 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
@@ -327,7 +327,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		20415A196E3815BE46B82837 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */ = {
+		4AEEC1F92A1EBDB3E4FD3545 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sindresorhus/KeyboardShortcuts";
 			requirement = {
@@ -338,12 +338,12 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		704DB774E6ABC2B1C6F83DAF /* KeyboardShortcuts */ = {
+		240717894B3D857E7AA3F160 /* KeyboardShortcuts */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 20415A196E3815BE46B82837 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;
+			package = 4AEEC1F92A1EBDB3E4FD3545 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;
 			productName = KeyboardShortcuts;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
-	rootObject = E31E0B0B22D2A4E0E8EEE476 /* Project object */;
+	rootObject = 6576996440293AD3D9A47631 /* Project object */;
 }

@@ -1,4 +1,4 @@
-name: ShaneDivvy
+name: Tatami
 options:
   bundleIdPrefix: com.kaiizen
   deploymentTarget:
@@ -8,7 +8,7 @@ packages:
     url: https://github.com/sindresorhus/KeyboardShortcuts
     from: 2.0.0
 targets:
-  ShaneDivvy:
+  Tatami:
     type: application
     platform: macOS
     sources:
@@ -17,7 +17,7 @@ targets:
       - package: KeyboardShortcuts
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.kaiizen.ShaneDivvy
+        PRODUCT_BUNDLE_IDENTIFIER: com.kaiizen.Tatami
         MARKETING_VERSION: 0.1.0
         CURRENT_PROJECT_VERSION: 1
         SWIFT_VERSION: "6.0"

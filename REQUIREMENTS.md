@@ -1,4 +1,6 @@
-# Shane-Divvy — Requirements
+# Tatami — Requirements
+
+**Tatami** — named for the Japanese mats laid out in clean grids; rooms are literally measured and planned in mat-grid units. This app lays your windows out the same way.
 
 ## Why
 
