@@ -11,12 +11,16 @@
 		67900B9094643949CD6E3A99 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 704DB774E6ABC2B1C6F83DAF /* KeyboardShortcuts */; };
 		880D6835C886C1D818F69222 /* HUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E52D089B864628081126C75 /* HUD.swift */; };
 		995B68388F577E728792AEFD /* Shortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5112FA1DF7752F27D446BEBC /* Shortcuts.swift */; };
+		E978870710930D16952476E7 /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C343F4E217F46390F2E591A4 /* WindowManager.swift */; };
+		F23B6E880E3A7A139F6B7209 /* LayoutActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C666E6409B6FAAFF9A6E34CA /* LayoutActions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		5112FA1DF7752F27D446BEBC /* Shortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shortcuts.swift; sourceTree = "<group>"; };
 		9E52D089B864628081126C75 /* HUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUD.swift; sourceTree = "<group>"; };
 		9EB5683BB857EAB699316BAA /* ShaneDivvy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShaneDivvy.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C343F4E217F46390F2E591A4 /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
+		C666E6409B6FAAFF9A6E34CA /* LayoutActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutActions.swift; sourceTree = "<group>"; };
 		F1FCC3702BFE70D45CC2F3C0 /* ShaneDivvyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShaneDivvyApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -36,8 +40,10 @@
 			isa = PBXGroup;
 			children = (
 				9E52D089B864628081126C75 /* HUD.swift */,
+				C666E6409B6FAAFF9A6E34CA /* LayoutActions.swift */,
 				F1FCC3702BFE70D45CC2F3C0 /* ShaneDivvyApp.swift */,
 				5112FA1DF7752F27D446BEBC /* Shortcuts.swift */,
+				C343F4E217F46390F2E591A4 /* WindowManager.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -122,8 +128,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				880D6835C886C1D818F69222 /* HUD.swift in Sources */,
+				F23B6E880E3A7A139F6B7209 /* LayoutActions.swift in Sources */,
 				1457C04CD387568DA1D944D6 /* ShaneDivvyApp.swift in Sources */,
 				995B68388F577E728792AEFD /* Shortcuts.swift in Sources */,
+				E978870710930D16952476E7 /* WindowManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
