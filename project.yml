@@ -24,6 +24,8 @@ targets:
         GENERATE_INFOPLIST_FILE: true
         INFOPLIST_KEY_LSUIElement: true
         INFOPLIST_KEY_NSHumanReadableCopyright: ""
+        # Real signing identity (not ad-hoc): keeps the code signature stable
+        # across rebuilds so the Accessibility grant in TCC keeps matching.
         CODE_SIGN_STYLE: Automatic
-        CODE_SIGN_IDENTITY: "-"
+        DEVELOPMENT_TEAM: 93H68BT82H
         ENABLE_HARDENED_RUNTIME: false
