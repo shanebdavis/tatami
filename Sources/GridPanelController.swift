@@ -10,10 +10,27 @@ final class GridPanelController {
 
     let columns = 6
     let rows = 5
+    private let baseCellSize: CGFloat = 52
+    private let cellSpacing: CGFloat = 6
+
+    /// Transient: pressing space while the panel is open doubles the grid
+    /// resolution; the panel always reopens at the base grid.
+    private var doubled = false
 
     private var panel: GridPanel?
+    private var hosting: NSHostingView<GridPanelView>?
     private var previewWindow: NSWindow?
     private var target: (window: AXUIElement, screen: NSScreen)?
+
+    private var effectiveColumns: Int { doubled ? columns * 2 : columns }
+    private var effectiveRows: Int { doubled ? rows * 2 : rows }
+
+    /// Cell size that keeps the grid footprint identical in both modes.
+    private var effectiveCellSize: CGFloat {
+        guard doubled else { return baseCellSize }
+        let gridWidth = CGFloat(columns) * (baseCellSize + cellSpacing) - cellSpacing
+        return (gridWidth - CGFloat(2 * columns - 1) * cellSpacing) / CGFloat(2 * columns)
+    }
 
     func toggle() {
         if panel != nil {
@@ -39,17 +56,14 @@ final class GridPanelController {
 
         let app = NSWorkspace.shared.frontmostApplication
         target = (window, screen)
+        doubled = false
 
-        let view = GridPanelView(
-            columns: columns,
-            rows: rows,
+        let hosting = NSHostingView(rootView: makeView(
             appIcon: app?.icon,
-            appName: app?.localizedName ?? "Window",
-            onSelectionChanged: { [weak self] region in self?.updatePreview(region) },
-            onCommit: { [weak self] region in self?.commit(region) }
-        )
-        let hosting = NSHostingView(rootView: view)
+            appName: app?.localizedName ?? "Window"
+        ))
         hosting.frame.size = hosting.fittingSize
+        self.hosting = hosting
 
         let panel = GridPanel(
             contentRect: NSRect(origin: .zero, size: hosting.frame.size),
@@ -64,6 +78,7 @@ final class GridPanelController {
         panel.collectionBehavior = [.canJoinAllSpaces, .transient]
         panel.contentView = hosting
         panel.onCancel = { [weak self] in self?.dismiss() }
+        panel.onToggleDouble = { [weak self] in self?.toggleDouble() }
 
         let area = screen.visibleFrame
         panel.setFrameOrigin(NSPoint(
@@ -80,14 +95,38 @@ final class GridPanelController {
         guard let panel else { return }
         self.panel = nil
         panel.close()
+        hosting = nil
         previewWindow?.close()
         previewWindow = nil
         target = nil
     }
 
+    private func makeView(appIcon: NSImage?, appName: String) -> GridPanelView {
+        GridPanelView(
+            columns: effectiveColumns,
+            rows: effectiveRows,
+            cellSize: effectiveCellSize,
+            appIcon: appIcon,
+            appName: appName,
+            onSelectionChanged: { [weak self] region in self?.updatePreview(region) },
+            onCommit: { [weak self] region in self?.commit(region) }
+        )
+    }
+
+    private func toggleDouble() {
+        guard let hosting else { return }
+        doubled.toggle()
+        let old = hosting.rootView
+        hosting.rootView = makeView(appIcon: old.appIcon, appName: old.appName)
+        updatePreview(nil)
+    }
+
     private func commit(_ region: GridRegion) {
         if let target {
-            WindowManager.setFrame(region.rect(on: target.screen, columns: columns, rows: rows), of: target.window)
+            WindowManager.setFrame(
+                region.rect(on: target.screen, columns: effectiveColumns, rows: effectiveRows),
+                of: target.window
+            )
         }
         dismiss()
     }
@@ -100,7 +139,7 @@ final class GridPanelController {
             previewWindow?.orderOut(nil)
             return
         }
-        let rect = region.rect(on: target.screen, columns: columns, rows: rows)
+        let rect = region.rect(on: target.screen, columns: effectiveColumns, rows: effectiveRows)
         let window = previewWindow ?? makePreviewWindow()
         window.setFrame(rect, display: true)
         if let panel {
@@ -130,11 +169,20 @@ final class GridPanelController {
 /// resignKey) — all without activating the app.
 private final class GridPanel: NSPanel {
     var onCancel: (() -> Void)?
+    var onToggleDouble: (() -> Void)?
 
     override var canBecomeKey: Bool { true }
 
     override func cancelOperation(_ sender: Any?) {
         onCancel?()
+    }
+
+    override func keyDown(with event: NSEvent) {
+        if event.charactersIgnoringModifiers == " " {
+            onToggleDouble?()
+        } else {
+            super.keyDown(with: event)
+        }
     }
 
     override func resignKey() {

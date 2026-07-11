@@ -5,6 +5,7 @@ import SwiftUI
 struct GridPanelView: View {
     let columns: Int
     let rows: Int
+    let cellSize: CGFloat
     let appIcon: NSImage?
     let appName: String
     let onSelectionChanged: (GridRegion?) -> Void
@@ -13,7 +14,6 @@ struct GridPanelView: View {
     @State private var startCell: GridCell?
     @State private var currentCell: GridCell?
 
-    private let cellSize: CGFloat = 52
     private let cellSpacing: CGFloat = 6
 
     private var selection: GridRegion? {
@@ -33,6 +33,9 @@ struct GridPanelView: View {
                     .font(.title3.weight(.semibold))
             }
             grid
+            Text("space: finer grid")
+                .font(.caption)
+                .foregroundStyle(.secondary)
         }
         .padding(24)
         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 18))
