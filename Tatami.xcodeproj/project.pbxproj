@@ -13,16 +13,22 @@
 		806944012410E5A91F3D3F43 /* GridPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF63AE98FA660D69BFE7D47 /* GridPanelView.swift */; };
 		86C71BBF2C263F99A6C7C3BE /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 240717894B3D857E7AA3F160 /* KeyboardShortcuts */; };
 		92F22F34230E37BA02ACE574 /* GridPanelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80519AD547085D61C63B335E /* GridPanelController.swift */; };
+		9774F9F040412DA1EF4BFF07 /* LayoutEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58528A9452D0815E1371CD52 /* LayoutEngine.swift */; };
 		9D61EE39EBEA48C853FC9AEE /* HUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE5DDD904E335F119AFD52EF /* HUD.swift */; };
 		AAE9B71577DDB5EFCA5A94E4 /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BC4EAA5F684A7C803A4DE9B /* WindowManager.swift */; };
+		FD4B0A1CD42F3BB86DA59234 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741D98006F0B1DEE3D1F4C72 /* SettingsView.swift */; };
+		FF3961C8B94A0E92A5458D33 /* PresetStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605F4C314B6D98AB7B7C4FCE /* PresetStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		00E10B86051D7EEF50F6BABA /* GridRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridRegion.swift; sourceTree = "<group>"; };
 		197ADE0896C608F1274BB07D /* Shortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shortcuts.swift; sourceTree = "<group>"; };
 		1F1DC872C75B96AAEBF30600 /* Tatami.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tatami.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		58528A9452D0815E1371CD52 /* LayoutEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutEngine.swift; sourceTree = "<group>"; };
+		605F4C314B6D98AB7B7C4FCE /* PresetStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetStore.swift; sourceTree = "<group>"; };
 		6A5E0B5C53363C65188E3B52 /* TatamiApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TatamiApp.swift; sourceTree = "<group>"; };
 		6BC4EAA5F684A7C803A4DE9B /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
+		741D98006F0B1DEE3D1F4C72 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		80519AD547085D61C63B335E /* GridPanelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridPanelController.swift; sourceTree = "<group>"; };
 		9DF63AE98FA660D69BFE7D47 /* GridPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridPanelView.swift; sourceTree = "<group>"; };
 		BE5DDD904E335F119AFD52EF /* HUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUD.swift; sourceTree = "<group>"; };
@@ -47,6 +53,9 @@
 				9DF63AE98FA660D69BFE7D47 /* GridPanelView.swift */,
 				00E10B86051D7EEF50F6BABA /* GridRegion.swift */,
 				BE5DDD904E335F119AFD52EF /* HUD.swift */,
+				58528A9452D0815E1371CD52 /* LayoutEngine.swift */,
+				605F4C314B6D98AB7B7C4FCE /* PresetStore.swift */,
+				741D98006F0B1DEE3D1F4C72 /* SettingsView.swift */,
 				197ADE0896C608F1274BB07D /* Shortcuts.swift */,
 				6A5E0B5C53363C65188E3B52 /* TatamiApp.swift */,
 				6BC4EAA5F684A7C803A4DE9B /* WindowManager.swift */,
@@ -138,6 +147,9 @@
 				806944012410E5A91F3D3F43 /* GridPanelView.swift in Sources */,
 				05507049BEEFBB9E1C2F759F /* GridRegion.swift in Sources */,
 				9D61EE39EBEA48C853FC9AEE /* HUD.swift in Sources */,
+				9774F9F040412DA1EF4BFF07 /* LayoutEngine.swift in Sources */,
+				FF3961C8B94A0E92A5458D33 /* PresetStore.swift in Sources */,
+				FD4B0A1CD42F3BB86DA59234 /* SettingsView.swift in Sources */,
 				770A98DE68E420EBECB3F018 /* Shortcuts.swift in Sources */,
 				7AF894E9A39C291839CBABD8 /* TatamiApp.swift in Sources */,
 				AAE9B71577DDB5EFCA5A94E4 /* WindowManager.swift in Sources */,

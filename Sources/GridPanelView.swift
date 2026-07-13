@@ -1,14 +1,19 @@
 import SwiftUI
 
 /// The grid the user paints a selection onto. Pure view: reports selection
-/// changes and the final committed region via callbacks.
+/// changes and the final committed region via callbacks. Used both as the
+/// floating layout panel (with app header + hint) and as the region picker
+/// in Settings (bare grid showing the saved region).
 struct GridPanelView: View {
     let columns: Int
     let rows: Int
     let cellSize: CGFloat
-    let appIcon: NSImage?
-    let appName: String
-    let onSelectionChanged: (GridRegion?) -> Void
+    var appIcon: NSImage? = nil
+    var appName: String? = nil
+    var hint: String? = nil
+    /// Shown highlighted when no drag is in progress (picker mode).
+    var committedRegion: GridRegion? = nil
+    var onSelectionChanged: (GridRegion?) -> Void = { _ in }
     let onCommit: (GridRegion) -> Void
 
     @State private var startCell: GridCell?
@@ -21,24 +26,36 @@ struct GridPanelView: View {
         return GridRegion(from: startCell, to: currentCell)
     }
 
+    private var highlightedRegion: GridRegion? {
+        selection ?? committedRegion
+    }
+
     var body: some View {
         VStack(spacing: 14) {
-            HStack(spacing: 10) {
-                if let appIcon {
-                    Image(nsImage: appIcon)
-                        .resizable()
-                        .frame(width: 32, height: 32)
+            if let appName {
+                HStack(spacing: 10) {
+                    if let appIcon {
+                        Image(nsImage: appIcon)
+                            .resizable()
+                            .frame(width: 32, height: 32)
+                    }
+                    Text(appName)
+                        .font(.title3.weight(.semibold))
                 }
-                Text(appName)
-                    .font(.title3.weight(.semibold))
             }
             grid
-            Text("space: finer grid")
-                .font(.caption)
-                .foregroundStyle(.secondary)
+            if let hint {
+                Text(hint)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
         }
-        .padding(24)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 18))
+        .padding(appName == nil ? 0 : 24)
+        .background {
+            if appName != nil {
+                RoundedRectangle(cornerRadius: 18).fill(.regularMaterial)
+            }
+        }
     }
 
     private var grid: some View {
@@ -50,7 +67,7 @@ struct GridPanelView: View {
                 HStack(spacing: cellSpacing) {
                     ForEach(0..<columns, id: \.self) { col in
                         let cell = GridCell(col: col, row: row)
-                        let isSelected = selection?.contains(cell) ?? false
+                        let isSelected = highlightedRegion?.contains(cell) ?? false
                         RoundedRectangle(cornerRadius: 5)
                             .fill(isSelected ? Color.accentColor.opacity(0.75) : Color.primary.opacity(0.08))
                             .overlay(

@@ -41,26 +41,14 @@ final class GridPanelController {
     }
 
     func summon() {
-        guard WindowManager.hasAccessibilityPermission else {
-            WindowManager.requestAccessibilityPermission()
-            HUD.shared.flash("Grant Accessibility permission, then try again", for: .seconds(2))
-            return
-        }
-        guard let window = WindowManager.focusedWindow(),
-              let windowFrame = WindowManager.frame(of: window),
-              let screen = WindowManager.screen(containing: windowFrame) ?? NSScreen.main
-        else {
-            HUD.shared.flash("No focused window found", for: .seconds(1.5))
-            return
-        }
-
-        let app = NSWorkspace.shared.frontmostApplication
-        target = (window, screen)
+        guard let focused = LayoutEngine.focusedTarget() else { return }
+        let screen = focused.screen
+        target = (focused.window, screen)
         doubled = false
 
         let hosting = NSHostingView(rootView: makeView(
-            appIcon: app?.icon,
-            appName: app?.localizedName ?? "Window"
+            appIcon: focused.appIcon,
+            appName: focused.appName
         ))
         hosting.frame.size = hosting.fittingSize
         self.hosting = hosting
@@ -101,13 +89,14 @@ final class GridPanelController {
         target = nil
     }
 
-    private func makeView(appIcon: NSImage?, appName: String) -> GridPanelView {
+    private func makeView(appIcon: NSImage?, appName: String?) -> GridPanelView {
         GridPanelView(
             columns: effectiveColumns,
             rows: effectiveRows,
             cellSize: effectiveCellSize,
             appIcon: appIcon,
             appName: appName,
+            hint: "space: finer grid",
             onSelectionChanged: { [weak self] region in self?.updatePreview(region) },
             onCommit: { [weak self] region in self?.commit(region) }
         )

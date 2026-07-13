@@ -12,17 +12,35 @@ struct TatamiApp: App {
         KeyboardShortcuts.onKeyDown(for: .summonGrid) {
             GridPanelController.shared.toggle()
         }
+        PresetStore.shared.registerHotkeys()
     }
 
     var body: some Scene {
         MenuBarExtra("Tatami", systemImage: "rectangle.split.3x3") {
-            Text("Tatami v0.1 — Phase 5")
-            Text("⌃⌥⌘Space: lay out focused window")
-            Divider()
-            Button("Quit Tatami") {
-                NSApp.terminate(nil)
-            }
-            .keyboardShortcut("q")
+            MenuContent()
         }
+        Settings {
+            SettingsView()
+        }
+    }
+}
+
+private struct MenuContent: View {
+    @Environment(\.openSettings) private var openSettings
+
+    var body: some View {
+        Text("Tatami v0.1 — Phase 6")
+        Button("Settings…") {
+            // Accessory apps (no Dock icon) don't come forward on their own;
+            // activate so the settings window isn't buried.
+            NSApp.activate(ignoringOtherApps: true)
+            openSettings()
+        }
+        .keyboardShortcut(",")
+        Divider()
+        Button("Quit Tatami") {
+            NSApp.terminate(nil)
+        }
+        .keyboardShortcut("q")
     }
 }
