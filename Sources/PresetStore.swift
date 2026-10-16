@@ -1,31 +1,42 @@
-import Foundation
+import AppKit
 import KeyboardShortcuts
 
-/// A saved layout: a grid region plus the grid dimensions it was defined on,
-/// bound to a user-recorded global shortcut. Resolution-independent.
+/// A saved layout: a grid region plus the grid dimensions it was defined on.
+/// Resolution-independent: resolves to a frame on whatever screen it's
+/// applied to.
 struct Preset: Codable, Identifiable, Equatable {
     var id = UUID()
-    var name = "New Preset"
-    var region = GridRegion(from: GridCell(col: 0, row: 0), to: GridCell(col: 2, row: 4))
-    var columns = 6
-    var rows = 5
+    var region: GridRegion
+    var columns: Int
+    var rows: Int
 
+    /// Optional global shortcut that applies the preset with no panel shown.
     var shortcutName: KeyboardShortcuts.Name {
         KeyboardShortcuts.Name("preset-\(id.uuidString)")
     }
+
+    func rect(on screen: NSScreen) -> CGRect {
+        region.rect(on: screen, columns: columns, rows: rows)
+    }
 }
 
-/// Owns the preset list: persistence (UserDefaults JSON) and global hotkey
-/// registration/dispatch for every preset.
+/// Owns the ordered preset list: persistence (UserDefaults JSON), the slot
+/// keys that apply presets from the grid panel, and global hotkey
+/// registration/dispatch.
 @MainActor
 final class PresetStore: ObservableObject {
     static let shared = PresetStore()
 
+    /// Grid panel keys in slot order. Their count caps the preset list.
+    static let slotKeys = "1234567890-=".map(String.init)
+
     private static let defaultsKey = "presets"
 
-    @Published var presets: [Preset] {
+    @Published private(set) var presets: [Preset] {
         didSet { save() }
     }
+
+    var isFull: Bool { presets.count >= Self.slotKeys.count }
 
     init() {
         if let data = UserDefaults.standard.data(forKey: Self.defaultsKey),
@@ -43,8 +54,8 @@ final class PresetStore: ObservableObject {
         }
     }
 
-    func add() {
-        let preset = Preset()
+    func add(_ preset: Preset) {
+        guard !isFull else { return }
         presets.append(preset)
         register(preset)
     }
@@ -56,16 +67,27 @@ final class PresetStore: ObservableObject {
         presets.removeAll { $0.id == preset.id }
     }
 
+    /// Moves `preset` to slot `index`, shifting the presets in between.
+    func move(_ preset: Preset, to index: Int) {
+        guard let from = presets.firstIndex(where: { $0.id == preset.id }), from != index else { return }
+        var reordered = presets
+        reordered.insert(reordered.remove(at: from), at: index)
+        presets = reordered
+    }
+
+    /// The preset in the slot for `key`, if that slot is filled.
+    func preset(forKey key: String) -> Preset? {
+        guard let slot = Self.slotKeys.firstIndex(of: key), slot < presets.count else { return nil }
+        return presets[slot]
+    }
+
     private func register(_ preset: Preset) {
         let id = preset.id
         KeyboardShortcuts.onKeyDown(for: preset.shortcutName) { [weak self] in
-            self?.apply(id)
+            if let preset = self?.presets.first(where: { $0.id == id }) {
+                LayoutEngine.apply(preset)
+            }
         }
-    }
-
-    private func apply(_ id: UUID) {
-        guard let preset = presets.first(where: { $0.id == id }) else { return }
-        LayoutEngine.apply(region: preset.region, columns: preset.columns, rows: preset.rows)
     }
 
     private func save() {

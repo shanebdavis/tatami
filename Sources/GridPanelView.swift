@@ -1,73 +1,83 @@
 import SwiftUI
 
-/// The grid the user paints a selection onto. Pure view: reports selection
-/// changes and the final committed region via callbacks. Used both as the
-/// floating layout panel (with app header + hint) and as the region picker
-/// in Settings (bare grid showing the saved region).
+/// Contents of the floating grid panel: the target app's header, the grid
+/// the user paints a region onto, the preset slots, and a footer with the
+/// "Add Preset" button. Reports everything to the controller.
 struct GridPanelView: View {
-    let columns: Int
-    let rows: Int
-    let cellSize: CGFloat
-    var appIcon: NSImage? = nil
-    var appName: String? = nil
-    var hint: String? = nil
-    /// Shown highlighted when no drag is in progress (picker mode).
-    var committedRegion: GridRegion? = nil
-    var onSelectionChanged: (GridRegion?) -> Void = { _ in }
-    let onCommit: (GridRegion) -> Void
+    @ObservedObject var controller: GridPanelController
+    let appIcon: NSImage?
+    let appName: String
 
+    @ObservedObject private var store = PresetStore.shared
     @State private var startCell: GridCell?
     @State private var currentCell: GridCell?
 
+    /// Fixed grid footprint: six 52pt cells with 6pt gaps. Cells shrink to
+    /// fit when the grid doubles.
+    private let gridWidth: CGFloat = 342
     private let cellSpacing: CGFloat = 6
+
+    private var columns: Int { controller.columns }
+    private var rows: Int { controller.rows }
+
+    private var cellSize: CGFloat {
+        (gridWidth - CGFloat(columns - 1) * cellSpacing) / CGFloat(columns)
+    }
 
     private var selection: GridRegion? {
         guard let startCell, let currentCell else { return nil }
         return GridRegion(from: startCell, to: currentCell)
     }
 
-    private var highlightedRegion: GridRegion? {
-        selection ?? committedRegion
-    }
-
     var body: some View {
         VStack(spacing: 14) {
-            if let appName {
-                HStack(spacing: 10) {
-                    if let appIcon {
-                        Image(nsImage: appIcon)
-                            .resizable()
-                            .frame(width: 32, height: 32)
-                    }
-                    Text(appName)
-                        .font(.title3.weight(.semibold))
+            HStack(spacing: 10) {
+                if let appIcon {
+                    Image(nsImage: appIcon)
+                        .resizable()
+                        .frame(width: 32, height: 32)
                 }
+                Text(appName)
+                    .font(.title3.weight(.semibold))
             }
             grid
-            if let hint {
-                Text(hint)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
+            PresetSlotsView(
+                width: gridWidth,
+                spacing: cellSpacing,
+                highlightsNextSlot: controller.definingPreset,
+                onHover: controller.preview,
+                onApply: controller.apply
+            )
+            footer
         }
-        .padding(appName == nil ? 0 : 24)
-        .background {
-            if appName != nil {
-                RoundedRectangle(cornerRadius: 18).fill(.regularMaterial)
+        .padding(24)
+        .background(RoundedRectangle(cornerRadius: 18).fill(.regularMaterial))
+    }
+
+    private var footer: some View {
+        let defining = controller.definingPreset
+        return HStack {
+            Text(defining ? "Drag on the grid to define the preset" : "space: finer grid")
+                .font(.caption)
+                .foregroundStyle(defining ? Color.accentColor : .secondary)
+            Spacer()
+            Button(defining ? "Cancel" : "Add Preset", systemImage: defining ? "xmark" : "plus") {
+                controller.toggleDefiningPreset()
             }
+            .controlSize(.small)
+            .disabled(!defining && store.isFull)
         }
+        .frame(width: gridWidth)
     }
 
     private var grid: some View {
-        let gridWidth = CGFloat(columns) * (cellSize + cellSpacing) - cellSpacing
         let gridHeight = CGFloat(rows) * (cellSize + cellSpacing) - cellSpacing
 
         return VStack(spacing: cellSpacing) {
             ForEach(0..<rows, id: \.self) { row in
                 HStack(spacing: cellSpacing) {
                     ForEach(0..<columns, id: \.self) { col in
-                        let cell = GridCell(col: col, row: row)
-                        let isSelected = highlightedRegion?.contains(cell) ?? false
+                        let isSelected = selection?.contains(GridCell(col: col, row: row)) ?? false
                         RoundedRectangle(cornerRadius: 5)
                             .fill(isSelected ? Color.accentColor.opacity(0.75) : Color.primary.opacity(0.08))
                             .overlay(
@@ -85,13 +95,13 @@ struct GridPanelView: View {
             DragGesture(minimumDistance: 0)
                 .onChanged { drag in
                     if startCell == nil {
-                        startCell = cell(at: drag.startLocation, gridWidth: gridWidth, gridHeight: gridHeight)
+                        startCell = cell(at: drag.startLocation, gridHeight: gridHeight)
                     }
-                    currentCell = cell(at: drag.location, gridWidth: gridWidth, gridHeight: gridHeight)
-                    onSelectionChanged(selection)
+                    currentCell = cell(at: drag.location, gridHeight: gridHeight)
+                    controller.selectionChanged(selection)
                 }
                 .onEnded { _ in
-                    if let selection { onCommit(selection) }
+                    if let selection { controller.commit(selection) }
                     startCell = nil
                     currentCell = nil
                 }
@@ -100,7 +110,7 @@ struct GridPanelView: View {
 
     /// Maps a point in grid-local coordinates to a cell, clamped to the grid
     /// so drags that wander outside still track the nearest edge cell.
-    private func cell(at point: CGPoint, gridWidth: CGFloat, gridHeight: CGFloat) -> GridCell {
+    private func cell(at point: CGPoint, gridHeight: CGFloat) -> GridCell {
         let x = min(max(point.x, 0), gridWidth - 1)
         let y = min(max(point.y, 0), gridHeight - 1)
         let col = min(Int(x / (cellSize + cellSpacing)), columns - 1)

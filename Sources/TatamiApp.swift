@@ -29,7 +29,7 @@ private struct MenuContent: View {
     @Environment(\.openSettings) private var openSettings
 
     var body: some View {
-        Text("Tatami v0.1 — Phase 6")
+        Text("Tatami v0.1 (Phase 7)")
         Button("Settings…") {
             // Accessory apps (no Dock icon) don't come forward on their own;
             // activate so the settings window isn't buried.
