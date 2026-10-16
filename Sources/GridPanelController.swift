@@ -9,7 +9,7 @@ final class GridPanelController: ObservableObject {
     static let shared = GridPanelController()
 
     private let baseColumns = 6
-    private let baseRows = 5
+    private let baseRows = 6
 
     /// Transient: pressing space while the panel is open doubles the grid
     /// resolution; the panel always reopens at the base grid.

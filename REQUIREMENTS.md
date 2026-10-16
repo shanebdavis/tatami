@@ -37,7 +37,7 @@ A single user-configurable global hotkey summons the **grid panel**, targeting w
 
 - The panel appears on the screen containing the focused window
 - The panel displays the focused app's icon and name (as Divvy does), so it is unambiguous which window will move
-- The panel shows an N×M grid of cells (default 6×5, configurable)
+- The panel shows an N×M grid of cells (default 6×6, configurable)
 - **Click-drag** across cells selects a rectangular region; on mouse-up, the focused window is moved/resized to that region and the panel dismisses
 - While dragging, a translucent live preview shows the target frame on the actual screen behind the panel
 - **Escape** or clicking outside the grid dismisses the panel without acting
@@ -45,17 +45,18 @@ A single user-configurable global hotkey summons the **grid panel**, targeting w
 
 ### F2. Grid doubling
 
-While the grid panel is open, a toggle (keypress, e.g. `space`) doubles the grid resolution in both dimensions (6×5 → 12×10) for finer placement. Toggling again returns to the base grid. The doubled state is transient — the panel always opens at the base grid size.
+While the grid panel is open, a toggle (keypress, e.g. `space`) doubles the grid resolution in both dimensions (6×6 → 12×12) for finer placement. Toggling again returns to the base grid. The doubled state is transient — the panel always opens at the base grid size.
 
 ### F3. Preset layouts
 
 Up to twelve **saved grid regions**, kept in the grid panel so each common layout is one keypress after the summon hotkey.
 
-- A saved layout is a grid region (e.g. "columns 1–3 of 6, all 5 rows"), **not** absolute pixels. Layouts are resolution-independent and apply correctly on any monitor
+- A saved layout is a grid region (e.g. "columns 1–3 of 6, all 6 rows"), **not** absolute pixels. Layouts are resolution-independent and apply correctly on any monitor
 - The panel shows presets under the grid as two rows of six thumbnails, lined up with the grid's six columns. Each thumbnail shows its region
 - Slots are keyed `1`–`9`, `0`, `-`, `=` in order. With the panel open, pressing a slot's key or clicking its thumbnail moves the window and dismisses the panel
 - **Add Preset** at the bottom of the panel puts the grid in define mode: the next painted region is saved to the next free slot instead of moving the window. Escape backs out of define mode
 - Dragging a thumbnail reorders the presets, which renumbers their keys. Hovering one previews its region on screen and reveals an × to delete it
+- Built in: with the panel open, the arrow keys apply the top, bottom, left, and right halves of the screen
 - A preset can optionally get its own global shortcut (F4) that applies it instantly with no UI shown
 
 ### F4. Configuration window
@@ -109,5 +110,4 @@ Opened from the menu bar icon. Contains:
 
 ## Open Questions
 
-- Default base grid: Divvy's default is 6×5 — keep it? (Assumed: yes)
 - Should a second press of the summon hotkey while the panel is open dismiss it? (Assumed: yes)

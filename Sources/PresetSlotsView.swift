@@ -160,7 +160,7 @@ private struct SlotLayout<Picture: View>: View {
 
     var body: some View {
         VStack(spacing: 2) {
-            picture.aspectRatio(6 / 5, contentMode: .fit)
+            picture
             Text(key)
                 .font(.caption.monospaced().weight(.medium))
                 .foregroundStyle(.secondary)

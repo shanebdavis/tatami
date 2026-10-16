@@ -12,8 +12,8 @@ struct GridPanelView: View {
     @State private var startCell: GridCell?
     @State private var currentCell: GridCell?
 
-    /// Fixed grid footprint: six 52pt cells with 6pt gaps. Cells shrink to
-    /// fit when the grid doubles.
+    /// Fixed grid width: six 52pt cells with 6pt gaps. Cells shrink to fit
+    /// when the grid doubles.
     private let gridWidth: CGFloat = 342
     private let cellSpacing: CGFloat = 6
 
@@ -57,7 +57,7 @@ struct GridPanelView: View {
     private var footer: some View {
         let defining = controller.definingPreset
         return HStack {
-            Text(defining ? "Drag on the grid to define the preset" : "space: finer grid")
+            Text(defining ? "Drag on the grid to define the preset" : "space: finer grid · arrows: halves")
                 .font(.caption)
                 .foregroundStyle(defining ? Color.accentColor : .secondary)
             Spacer()
