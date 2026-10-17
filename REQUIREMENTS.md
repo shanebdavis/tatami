@@ -49,21 +49,22 @@ While the grid panel is open, a toggle (keypress, e.g. `space`) doubles the grid
 
 ### F3. Preset layouts
 
-Up to twelve **saved grid regions**, kept in the grid panel so each common layout is one keypress after the summon hotkey.
+Fourteen **preset slots**, each a saved grid region bound to a key, kept in the grid panel so each common layout is one keypress after the summon hotkey.
 
 - A saved layout is a grid region (e.g. "columns 1–3 of 6, all 6 rows"), **not** absolute pixels. Layouts are resolution-independent and apply correctly on any monitor
-- The panel shows presets under the grid as two rows of six thumbnails, lined up with the grid's six columns. Each thumbnail shows its region
-- Slots are keyed `1`–`9`, `0`, `-`, `=` in order. With the panel open, pressing a slot's key or clicking its thumbnail moves the window and dismisses the panel
-- **Add Preset** at the bottom of the panel puts the grid in define mode: the next painted region is saved to the next free slot instead of moving the window. Escape backs out of define mode
-- Dragging a thumbnail reorders the presets, which renumbers their keys. Hovering one previews its region on screen and reveals an × to delete it
-- Built in: with the panel open, the arrow keys apply the half of the screen on that side; ⌘+arrow the third, ⇧+arrow the two thirds. A legend at the bottom of the panel lays out the arrow keys like the keyboard's arrow cluster, each with a thumbnail of its layout; holding ⌘ or ⇧ updates the thumbnails. Clicking an arrow applies its layout
+- Slots `1`–`9`, `0`, `-`, `=` sit under the grid as two rows of six thumbnails, lined up with the grid's six columns. Slots `F` and `C` sit in the panel footer. Every slot is always shown, filled or empty
+- `F` (full screen) and `C` (centered, one grid unit in from each edge) come preloaded; like any slot, they can be cleared and redefined
+- With the panel open, pressing a filled slot's key or clicking its thumbnail moves the window and dismisses the panel
+- Pressing an empty slot's key or clicking it arms that slot: the next region painted on the grid is saved there instead of moving the window. Escape backs out
+- Hovering a filled slot previews its region on screen and reveals an × to clear it. Dragging a preset onto another slot swaps the two
+- Built in: with the panel open, the arrow keys apply the half of the screen on that side; ⌘+arrow the third, ⇧+arrow the two thirds, ⌘⇧+arrow the five sixths. The footer lays out the arrow keys like the keyboard's arrow cluster, each with a thumbnail of its layout, beside ⌘ ⅓, ⇧ ⅔, and ⌘⇧ ⅚ cells; holding a modifier lights its cell and updates the thumbnails. Clicking an arrow applies its layout
 - A preset can optionally get its own global shortcut (F4) that applies it instantly with no UI shown
 
 ### F4. Configuration window
 
 Opened from the menu bar icon. Contains:
 
-- **Presets list**: one row per preset in slot order, with its panel key, a thumbnail of its region, an optional global shortcut recorder, and a delete button. Adding and reordering happen in the panel (F3)
+- **Presets list**: one row per filled slot in key order, with its panel key, a thumbnail of its region, an optional global shortcut recorder, and a clear button. Setting and swapping slots happen in the panel (F3)
 - **General settings** — the summon hotkey (F1), base grid dimensions (rows × columns), launch at login
 
 ### F5. Menu bar presence

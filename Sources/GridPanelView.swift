@@ -1,8 +1,9 @@
 import SwiftUI
 
 /// Contents of the floating grid panel: the target app's header, the grid
-/// the user paints a region onto, the preset slots, and a footer with the
-/// "Add Preset" button. Reports everything to the controller.
+/// the user paints a region onto, the number-row preset slots, and a footer
+/// with the arrow-key legend, the F and C slots, and a hint. Reports
+/// everything to the controller.
 struct GridPanelView: View {
     @ObservedObject var controller: GridPanelController
     let appIcon: NSImage?
@@ -12,6 +13,7 @@ struct GridPanelView: View {
     let screenAspect: CGFloat
 
     @ObservedObject private var store = PresetStore.shared
+    @StateObject private var drag = SlotDrag()
     @State private var startCell: GridCell?
     @State private var currentCell: GridCell?
 
@@ -48,15 +50,11 @@ struct GridPanelView: View {
                     .font(.title3.weight(.semibold))
             }
             grid
-            PresetSlotsView(
-                slotSize: slotSize,
-                spacing: cellSpacing,
-                highlightsNextSlot: controller.definingPreset,
-                onHover: controller.preview,
-                onApply: controller.apply
-            )
+            numberSlots
             footer
         }
+        .overlay(alignment: .topLeading) { draggedTile }
+        .coordinateSpace(SlotDrag.space)
         .padding(24)
         .background(RoundedRectangle(cornerRadius: 18).fill(.regularMaterial))
     }
@@ -65,31 +63,67 @@ struct GridPanelView: View {
         Slot.size(rowWidth: gridWidth, spacing: cellSpacing, screenAspect: screenAspect)
     }
 
-    /// Arrow-key legend on the left; hint and Add Preset on the right.
-    private var footer: some View {
-        let defining = controller.definingPreset
-        return HStack(alignment: .bottom) {
-            ArrowKeysView(
-                slotSize: slotSize,
-                spacing: cellSpacing,
-                modifiers: controller.modifiers,
-                onHover: controller.preview,
-                onApply: controller.apply
-            )
-            Spacer()
-            VStack(alignment: .trailing, spacing: 8) {
-                Text(defining ? "Drag on the grid to define the preset" : "space: finer grid")
-                    .font(.caption)
-                    .foregroundStyle(defining ? Color.accentColor : .secondary)
-                    .multilineTextAlignment(.trailing)
-                Button(defining ? "Cancel" : "Add Preset", systemImage: defining ? "xmark" : "plus") {
-                    controller.toggleDefiningPreset()
+    private var numberSlots: some View {
+        let keys = PresetStore.numberKeys
+        return Grid(horizontalSpacing: cellSpacing, verticalSpacing: cellSpacing) {
+            ForEach(Array(stride(from: 0, to: keys.count, by: Slot.perRow)), id: \.self) { start in
+                GridRow {
+                    ForEach(keys[start..<start + Slot.perRow], id: \.self) { slot($0) }
                 }
-                .controlSize(.small)
-                .disabled(!defining && store.isFull)
             }
         }
-        .frame(width: gridWidth)
+    }
+
+    /// Row 1: ⌘ ⅓, ↑, ⇧ ⅔, ⌘⇧ ⅚, then the F and C slots.
+    /// Row 2: ←, ↓, →, then the hint across the last three columns.
+    private var footer: some View {
+        Grid(horizontalSpacing: cellSpacing, verticalSpacing: cellSpacing) {
+            GridRow {
+                modifierCell("⌘", "⅓", .command)
+                arrowCell(.upArrow, "↑")
+                modifierCell("⇧", "⅔", .shift)
+                modifierCell("⌘⇧", "⅚", [.command, .shift])
+                ForEach(PresetStore.letterKeys, id: \.self) { slot($0) }
+            }
+            GridRow {
+                arrowCell(.leftArrow, "←")
+                arrowCell(.downArrow, "↓")
+                arrowCell(.rightArrow, "→")
+                hint.gridCellColumns(3)
+            }
+        }
+    }
+
+    private var hint: some View {
+        let defining = controller.definingSlot
+        return Text(defining.map { "Drag on the grid to set \($0.uppercased())\nesc: cancel" } ?? "space: finer grid")
+            .font(.caption)
+            .foregroundStyle(defining == nil ? .secondary : Color.accentColor)
+            .multilineTextAlignment(.trailing)
+            .frame(width: 3 * slotSize.width + 2 * cellSpacing, alignment: .trailing)
+    }
+
+    /// The preset being dragged, following the cursor above everything.
+    @ViewBuilder private var draggedTile: some View {
+        if let key = drag.key, let preset = store.slots[key] {
+            PresetSlotView.tile(key, preset, highlighted: true)
+                .frame(width: slotSize.width, height: slotSize.height)
+                .shadow(radius: 6)
+                .offset(x: drag.tileOrigin.x, y: drag.tileOrigin.y)
+                .allowsHitTesting(false)
+        }
+    }
+
+    private func slot(_ key: String) -> some View {
+        PresetSlotView(key: key, slotSize: slotSize, controller: controller, drag: drag)
+    }
+
+    private func arrowCell(_ arrow: NSEvent.SpecialKey, _ label: String) -> some View {
+        ArrowKeyCell(arrow: arrow, label: label, slotSize: slotSize, controller: controller)
+    }
+
+    private func modifierCell(_ label: String, _ fraction: String, _ modifiers: NSEvent.ModifierFlags) -> some View {
+        ModifierCell(label: label, fraction: fraction, modifiers: modifiers, slotSize: slotSize, controller: controller)
     }
 
     private var grid: some View {

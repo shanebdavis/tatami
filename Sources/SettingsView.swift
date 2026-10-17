@@ -4,21 +4,25 @@ import SwiftUI
 struct SettingsView: View {
     @ObservedObject private var store = PresetStore.shared
 
+    private var filledSlots: [(key: String, preset: Preset)] {
+        PresetStore.slotKeys.compactMap { key in store.slots[key].map { (key, $0) } }
+    }
+
     var body: some View {
         Form {
             Section("Grid Panel") {
                 KeyboardShortcuts.Recorder("Show grid panel:", name: .summonGrid)
             }
             Section {
-                ForEach(Array(zip(PresetStore.slotKeys, store.presets)), id: \.1.id) { key, preset in
+                ForEach(filledSlots, id: \.preset.id) { key, preset in
                     PresetRow(key: key, preset: preset) {
-                        store.delete(preset)
+                        store.clear(key)
                     }
                 }
             } header: {
                 Text("Presets")
             } footer: {
-                Text("Add, reorder, and delete presets in the grid panel, where each preset's key applies it. Record a global shortcut here to apply a preset without opening the panel.")
+                Text("Set presets in the grid panel: click an empty slot (or press its key) and paint the region. Drag a preset onto another slot to swap them. Record a global shortcut here to apply a preset without opening the panel.")
             }
         }
         .formStyle(.grouped)
@@ -27,15 +31,15 @@ struct SettingsView: View {
     }
 }
 
-/// One preset: panel key + thumbnail + global shortcut + delete.
+/// One preset: panel key + thumbnail + global shortcut + clear.
 private struct PresetRow: View {
     let key: String
     let preset: Preset
-    let onDelete: () -> Void
+    let onClear: () -> Void
 
     var body: some View {
         HStack(spacing: 12) {
-            Text(key)
+            Text(key.uppercased())
                 .font(.body.monospaced().weight(.medium))
                 .foregroundStyle(.secondary)
                 .frame(width: 16)
@@ -48,7 +52,7 @@ private struct PresetRow: View {
             KeyboardShortcuts.Recorder(for: preset.shortcutName)
 
             Button(role: .destructive) {
-                onDelete()
+                onClear()
             } label: {
                 Image(systemName: "trash")
             }

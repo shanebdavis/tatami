@@ -20,78 +20,81 @@ struct Preset: Codable, Identifiable, Equatable {
     }
 }
 
-/// Owns the ordered preset list: persistence (UserDefaults JSON), the slot
-/// keys that apply presets from the grid panel, and global hotkey
-/// registration/dispatch.
+/// Owns the preset slots: one optional preset per grid panel key,
+/// persistence (UserDefaults JSON), and global hotkey registration/dispatch.
 @MainActor
 final class PresetStore: ObservableObject {
     static let shared = PresetStore()
 
-    /// Grid panel keys in slot order. Their count caps the preset list.
-    static let slotKeys = "1234567890-=".map(String.init)
+    /// Slot keys along the number row, shown as two rows of six.
+    static let numberKeys = "1234567890-=".map(String.init)
+    /// Slot keys shown in the panel footer: F and C.
+    static let letterKeys = ["f", "c"]
+    static let slotKeys = numberKeys + letterKeys
 
-    private static let defaultsKey = "presets"
+    /// Fresh installs start with F filling the screen and C centering the
+    /// window one grid unit in from each edge of the 6×6 grid.
+    private static let defaultSlots = [
+        "f": Preset(region: GridRegion(from: GridCell(col: 0, row: 0), to: GridCell(col: 5, row: 5)), columns: 6, rows: 6),
+        "c": Preset(region: GridRegion(from: GridCell(col: 1, row: 1), to: GridCell(col: 4, row: 4)), columns: 6, rows: 6),
+    ]
 
-    @Published private(set) var presets: [Preset] {
+    private static let defaultsKey = "presetSlots"
+
+    /// Presets by slot key. Empty slots have no entry.
+    @Published private(set) var slots: [String: Preset] {
         didSet { save() }
     }
 
-    var isFull: Bool { presets.count >= Self.slotKeys.count }
-
     init() {
         if let data = UserDefaults.standard.data(forKey: Self.defaultsKey),
-           let decoded = try? JSONDecoder().decode([Preset].self, from: data) {
-            presets = decoded
+           let decoded = try? JSONDecoder().decode([String: Preset].self, from: data) {
+            slots = decoded
         } else {
-            presets = []
+            slots = Self.defaultSlots
         }
     }
 
     /// Call once at launch: hooks up handlers for all saved presets.
     func registerHotkeys() {
-        for preset in presets {
+        for preset in slots.values {
             register(preset)
         }
     }
 
-    func add(_ preset: Preset) {
-        guard !isFull else { return }
-        presets.append(preset)
+    func set(_ preset: Preset, for key: String) {
+        clear(key)
+        slots[key] = preset
         register(preset)
     }
 
-    func delete(_ preset: Preset) {
+    func clear(_ key: String) {
+        guard let preset = slots[key] else { return }
         // Clears the recorded shortcut so the hotkey stops firing and the
         // key combo is freed up for other uses.
         KeyboardShortcuts.reset(preset.shortcutName)
-        presets.removeAll { $0.id == preset.id }
+        slots[key] = nil
     }
 
-    /// Moves `preset` to slot `index`, shifting the presets in between.
-    func move(_ preset: Preset, to index: Int) {
-        guard let from = presets.firstIndex(where: { $0.id == preset.id }), from != index else { return }
-        var reordered = presets
-        reordered.insert(reordered.remove(at: from), at: index)
-        presets = reordered
-    }
-
-    /// The preset in the slot for `key`, if that slot is filled.
-    func preset(forKey key: String) -> Preset? {
-        guard let slot = Self.slotKeys.firstIndex(of: key), slot < presets.count else { return nil }
-        return presets[slot]
+    /// Swaps the contents of two slots, either of which may be empty.
+    func swap(_ a: String, _ b: String) {
+        var swapped = slots
+        swapped[a] = slots[b]
+        swapped[b] = slots[a]
+        slots = swapped
     }
 
     private func register(_ preset: Preset) {
         let id = preset.id
         KeyboardShortcuts.onKeyDown(for: preset.shortcutName) { [weak self] in
-            if let preset = self?.presets.first(where: { $0.id == id }) {
+            if let preset = self?.slots.values.first(where: { $0.id == id }) {
                 LayoutEngine.apply(preset)
             }
         }
     }
 
     private func save() {
-        if let data = try? JSONEncoder().encode(presets) {
+        if let data = try? JSONEncoder().encode(slots) {
             UserDefaults.standard.set(data, forKey: Self.defaultsKey)
         }
     }

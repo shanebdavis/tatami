@@ -65,15 +65,15 @@ The Divvy experience: hotkey summons a grid, paint a region, window moves there.
 
 Presets move into the panel, so every common layout is one keypress after the summon hotkey.
 
-- Two rows of six preset thumbnails under the grid, keyed `1`–`9`, `0`, `-`, `=`
-- **Add Preset** button: paint a region on the grid to save it to the next free slot
-- Click a thumbnail or press its key to apply; drag to reorder; hover for a live preview and a delete ×
-- Arrow keys apply built-in halves on that side; ⌘+arrows thirds, ⇧+arrows two thirds, with an arrow-cluster legend whose thumbnails follow the held modifier
+- Fixed preset slots: two rows of six under the grid keyed `1`–`9`, `0`, `-`, `=`, plus `F` and `C` in the footer, preloaded with full screen and centered
+- Click an empty slot or press its key, then paint the grid to set it
+- Click a filled slot or press its key to apply; drag onto another slot to swap; hover for a live preview and a clear ×
+- Arrow keys apply built-in halves on that side; ⌘+arrows thirds, ⇧+arrows two thirds, ⌘⇧+arrows five sixths, with an arrow-cluster legend whose thumbnails follow the held modifier
 - Base grid becomes 6×6 (12×12 doubled), shaped like the screen
 - Settings keeps the summon hotkey plus optional per-preset global shortcuts
 - "Show Grid" in the menu bar menu opens the panel
 
-**Validate:** add "left ⅔", "right ⅓", "full screen" from the panel; apply each by key and by click; drag to reorder and confirm the keys follow; delete one; each arrow, ⌘+arrow, and ⇧+arrow lands the window on the matching half, third, or two thirds, and the legend switches as ⌘ or ⇧ is held; restart the app and the presets survive.
+**Validate:** set slots 1, 4, and 9 from the panel (one by click, one by key, one after switching slots mid-define); apply each by key and by click; drag one onto an empty slot and one onto a filled slot; clear and redefine C; each arrow, ⌘+arrow, ⇧+arrow, and ⌘⇧+arrow lands the window on the matching half, third, two thirds, or five sixths, and the legend switches as modifiers are held; restart the app and the slots survive.
 
 ## Phase 8: Polish & daily-driver hardening
 

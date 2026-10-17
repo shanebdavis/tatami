@@ -15,9 +15,9 @@ final class GridPanelController: ObservableObject {
     /// resolution; the panel always reopens at the base grid.
     @Published private(set) var doubled = false
 
-    /// Transient: after "Add Preset", the next painted region is saved as a
-    /// preset instead of moving the window.
-    @Published private(set) var definingPreset = false
+    /// Transient: after an empty slot is picked, the next painted region is
+    /// saved to that slot instead of moving the window.
+    @Published private(set) var definingSlot: String?
 
     /// Modifier keys held right now, tracked while the panel is open so
     /// the arrow-key legend can show what ⌘ and ⇧ do.
@@ -43,7 +43,7 @@ final class GridPanelController: ObservableObject {
         guard let target = LayoutEngine.focusedTarget() else { return }
         self.target = target
         doubled = false
-        definingPreset = false
+        definingSlot = nil
         modifiers = NSEvent.modifierFlags
         modifiersMonitor = NSEvent.addLocalMonitorForEvents(matching: .flagsChanged) { [weak self] event in
             self?.modifiers = event.modifierFlags
@@ -98,21 +98,28 @@ final class GridPanelController: ObservableObject {
         target = nil
     }
 
-    func toggleDefiningPreset() {
-        definingPreset.toggle()
-        preview(nil)
+    /// A slot's key or click: applies its preset, or starts (or stops)
+    /// defining it when empty.
+    func activate(_ key: String) {
+        if let preset = PresetStore.shared.slots[key] {
+            apply(preset)
+        } else {
+            definingSlot = definingSlot == key ? nil : key
+            preview(nil)
+        }
     }
 
     func selectionChanged(_ region: GridRegion?) {
         preview(region.map(layout))
     }
 
-    /// Mouse-up on the grid: saves the region as a preset while defining
-    /// one, otherwise moves the window there.
+    /// Mouse-up on the grid: saves the region to the slot being defined, if
+    /// any, otherwise moves the window there.
     func commit(_ region: GridRegion) {
-        if definingPreset {
-            PresetStore.shared.add(layout(region))
-            toggleDefiningPreset()
+        if let definingSlot {
+            PresetStore.shared.set(layout(region), for: definingSlot)
+            self.definingSlot = nil
+            preview(nil)
         } else {
             apply(layout(region))
         }
@@ -131,22 +138,25 @@ final class GridPanelController: ObservableObject {
     }
 
     private func handleKey(_ event: NSEvent) -> Bool {
-        let key = event.charactersIgnoringModifiers ?? ""
+        let key = event.charactersIgnoringModifiers?.lowercased() ?? ""
         if key == " " {
             doubled.toggle()
             preview(nil)
-        } else if let preset = Preset.edge(for: event) ?? PresetStore.shared.preset(forKey: key) {
+        } else if let preset = Preset.edge(for: event) {
             apply(preset)
+        } else if PresetStore.slotKeys.contains(key) {
+            activate(key)
         } else {
             return false
         }
         return true
     }
 
-    /// Escape backs out of defining a preset first, then closes the panel.
+    /// Escape backs out of defining a slot first, then closes the panel.
     private func cancel() {
-        if definingPreset {
-            toggleDefiningPreset()
+        if definingSlot != nil {
+            definingSlot = nil
+            preview(nil)
         } else {
             dismiss()
         }
