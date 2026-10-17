@@ -2,35 +2,34 @@ import AppKit
 import SwiftUI
 
 /// Owns the grid panel lifecycle: summon on hotkey, live preview overlay
-/// while painting, commit on mouse-up, dismiss on Escape / click-away /
-/// second hotkey press.
+/// while painting or hovering a preset, commit on mouse-up or preset pick,
+/// dismiss on Escape / click-away / second hotkey press.
 @MainActor
-final class GridPanelController {
+final class GridPanelController: ObservableObject {
     static let shared = GridPanelController()
 
-    let columns = 6
-    let rows = 5
-    private let baseCellSize: CGFloat = 52
-    private let cellSpacing: CGFloat = 6
+    private let baseColumns = 6
+    private let baseRows = 6
 
     /// Transient: pressing space while the panel is open doubles the grid
     /// resolution; the panel always reopens at the base grid.
-    private var doubled = false
+    @Published private(set) var doubled = false
+
+    /// Transient: after an empty slot is picked, the next painted region is
+    /// saved to that slot instead of moving the window.
+    @Published private(set) var definingSlot: String?
+
+    /// Modifier keys held right now, tracked while the panel is open so
+    /// the arrow-key legend can show what ⌘ and ⇧ do.
+    @Published private(set) var modifiers: NSEvent.ModifierFlags = []
 
     private var panel: GridPanel?
-    private var hosting: NSHostingView<GridPanelView>?
     private var previewWindow: NSWindow?
-    private var target: (window: AXUIElement, screen: NSScreen)?
+    private var target: LayoutEngine.Target?
+    private var modifiersMonitor: Any?
 
-    private var effectiveColumns: Int { doubled ? columns * 2 : columns }
-    private var effectiveRows: Int { doubled ? rows * 2 : rows }
-
-    /// Cell size that keeps the grid footprint identical in both modes.
-    private var effectiveCellSize: CGFloat {
-        guard doubled else { return baseCellSize }
-        let gridWidth = CGFloat(columns) * (baseCellSize + cellSpacing) - cellSpacing
-        return (gridWidth - CGFloat(2 * columns - 1) * cellSpacing) / CGFloat(2 * columns)
-    }
+    var columns: Int { doubled ? baseColumns * 2 : baseColumns }
+    var rows: Int { doubled ? baseRows * 2 : baseRows }
 
     func toggle() {
         if panel != nil {
@@ -41,17 +40,24 @@ final class GridPanelController {
     }
 
     func summon() {
-        guard let focused = LayoutEngine.focusedTarget() else { return }
-        let screen = focused.screen
-        target = (focused.window, screen)
+        guard let target = LayoutEngine.focusedTarget() else { return }
+        self.target = target
         doubled = false
+        definingSlot = nil
+        modifiers = NSEvent.modifierFlags
+        modifiersMonitor = NSEvent.addLocalMonitorForEvents(matching: .flagsChanged) { [weak self] event in
+            self?.modifiers = event.modifierFlags
+            return event
+        }
 
-        let hosting = NSHostingView(rootView: makeView(
-            appIcon: focused.appIcon,
-            appName: focused.appName
+        let area = target.screen.visibleFrame
+        let hosting = NSHostingView(rootView: GridPanelView(
+            controller: self,
+            appIcon: target.appIcon,
+            appName: target.appName,
+            screenAspect: area.width / area.height
         ))
         hosting.frame.size = hosting.fittingSize
-        self.hosting = hosting
 
         let panel = GridPanel(
             contentRect: NSRect(origin: .zero, size: hosting.frame.size),
@@ -65,15 +71,15 @@ final class GridPanelController {
         panel.level = .statusBar
         panel.collectionBehavior = [.canJoinAllSpaces, .transient]
         panel.contentView = hosting
-        panel.onCancel = { [weak self] in self?.dismiss() }
-        panel.onToggleDouble = { [weak self] in self?.toggleDouble() }
+        panel.onKey = { [weak self] event in self?.handleKey(event) ?? false }
+        panel.onEscape = { [weak self] in self?.cancel() }
+        panel.onResignKey = { [weak self] in self?.dismiss() }
 
-        let area = screen.visibleFrame
         panel.setFrameOrigin(NSPoint(
             x: area.midX - hosting.frame.width / 2,
             y: area.midY - hosting.frame.height / 2
         ))
-        // Non-activating panel: becomes key (receives Escape) without
+        // Non-activating panel: becomes key (receives keys) without
         // activating our app, so the target app stays frontmost.
         panel.makeKeyAndOrderFront(nil)
         self.panel = panel
@@ -83,54 +89,89 @@ final class GridPanelController {
         guard let panel else { return }
         self.panel = nil
         panel.close()
-        hosting = nil
+        if let modifiersMonitor {
+            NSEvent.removeMonitor(modifiersMonitor)
+            self.modifiersMonitor = nil
+        }
         previewWindow?.close()
         previewWindow = nil
         target = nil
     }
 
-    private func makeView(appIcon: NSImage?, appName: String?) -> GridPanelView {
-        GridPanelView(
-            columns: effectiveColumns,
-            rows: effectiveRows,
-            cellSize: effectiveCellSize,
-            appIcon: appIcon,
-            appName: appName,
-            hint: "space: finer grid",
-            onSelectionChanged: { [weak self] region in self?.updatePreview(region) },
-            onCommit: { [weak self] region in self?.commit(region) }
-        )
+    /// A slot's key or click: applies its preset, or starts (or stops)
+    /// defining it when empty.
+    func activate(_ key: String) {
+        if let preset = PresetStore.shared.slots[key] {
+            apply(preset)
+        } else {
+            definingSlot = definingSlot == key ? nil : key
+            preview(nil)
+        }
     }
 
-    private func toggleDouble() {
-        guard let hosting else { return }
-        doubled.toggle()
-        let old = hosting.rootView
-        hosting.rootView = makeView(appIcon: old.appIcon, appName: old.appName)
-        updatePreview(nil)
+    func selectionChanged(_ region: GridRegion?) {
+        preview(region.map(layout))
     }
 
-    private func commit(_ region: GridRegion) {
+    /// Mouse-up on the grid: saves the region to the slot being defined, if
+    /// any, otherwise moves the window there.
+    func commit(_ region: GridRegion) {
+        if let definingSlot {
+            PresetStore.shared.set(layout(region), for: definingSlot)
+            self.definingSlot = nil
+            preview(nil)
+        } else {
+            apply(layout(region))
+        }
+    }
+
+    func apply(_ preset: Preset) {
         if let target {
-            WindowManager.setFrame(
-                region.rect(on: target.screen, columns: effectiveColumns, rows: effectiveRows),
-                of: target.window
-            )
+            WindowManager.setFrame(preset.rect(on: target.screen), of: target.window)
         }
         dismiss()
     }
 
+    /// The region painted on the current grid, as a preset.
+    private func layout(_ region: GridRegion) -> Preset {
+        Preset(region: region, columns: columns, rows: rows)
+    }
+
+    private func handleKey(_ event: NSEvent) -> Bool {
+        let key = event.charactersIgnoringModifiers?.lowercased() ?? ""
+        if key == " " {
+            doubled.toggle()
+            preview(nil)
+        } else if let preset = Preset.edge(for: event) {
+            apply(preset)
+        } else if PresetStore.slotKeys.contains(key) {
+            activate(key)
+        } else {
+            return false
+        }
+        return true
+    }
+
+    /// Escape backs out of defining a slot first, then closes the panel.
+    private func cancel() {
+        if definingSlot != nil {
+            definingSlot = nil
+            preview(nil)
+        } else {
+            dismiss()
+        }
+    }
+
     // MARK: - Live preview
 
-    private func updatePreview(_ region: GridRegion?) {
-        guard let target else { return }
-        guard let region else {
+    /// Shows where `preset` would put the window, or hides the preview.
+    func preview(_ preset: Preset?) {
+        guard let target, let preset else {
             previewWindow?.orderOut(nil)
             return
         }
-        let rect = region.rect(on: target.screen, columns: effectiveColumns, rows: effectiveRows)
         let window = previewWindow ?? makePreviewWindow()
-        window.setFrame(rect, display: true)
+        window.setFrame(preset.rect(on: target.screen), display: true)
         if let panel {
             window.order(.below, relativeTo: panel.windowNumber)
         }
@@ -154,28 +195,33 @@ final class GridPanelController {
 }
 
 /// Borderless panels can't become key by default; the grid panel must, so it
-/// can receive Escape (via cancelOperation) and dismiss on click-away (via
-/// resignKey) — all without activating the app.
+/// can receive keys (space, arrows, preset slots, Escape via
+/// cancelOperation) and dismiss on click-away (via resignKey), all without
+/// activating the app.
 private final class GridPanel: NSPanel {
-    var onCancel: (() -> Void)?
-    var onToggleDouble: (() -> Void)?
+    /// Returns true when the key was handled.
+    var onKey: ((NSEvent) -> Bool)?
+    var onEscape: (() -> Void)?
+    var onResignKey: (() -> Void)?
 
     override var canBecomeKey: Bool { true }
 
     override func cancelOperation(_ sender: Any?) {
-        onCancel?()
+        onEscape?()
+    }
+
+    /// ⌘-key events arrive here before keyDown.
+    override func performKeyEquivalent(with event: NSEvent) -> Bool {
+        onKey?(event) == true || super.performKeyEquivalent(with: event)
     }
 
     override func keyDown(with event: NSEvent) {
-        if event.charactersIgnoringModifiers == " " {
-            onToggleDouble?()
-        } else {
-            super.keyDown(with: event)
-        }
+        if onKey?(event) == true { return }
+        super.keyDown(with: event)
     }
 
     override func resignKey() {
         super.resignKey()
-        onCancel?()
+        onResignKey?()
     }
 }

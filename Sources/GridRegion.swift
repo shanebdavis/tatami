@@ -9,7 +9,7 @@ struct GridCell: Equatable {
 
 /// A rectangular region of grid cells, inclusive on both ends.
 /// Resolution-independent: resolve to a concrete frame on any screen with
-/// `rect(on:columns:rows:)`. Codable so Phase 6 presets can persist it.
+/// `rect(on:columns:rows:)`. Codable so presets can persist it.
 struct GridRegion: Equatable, Codable {
     var minCol: Int
     var minRow: Int

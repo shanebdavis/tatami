@@ -1,8 +1,8 @@
 import AppKit
 import SwiftUI
 
-/// A transient floating message panel, used in Phase 2 to prove the global
-/// hotkey fires. Does not activate the app or steal focus.
+/// A transient floating message panel for status and errors (e.g. missing
+/// permission). Does not activate the app or steal focus.
 @MainActor
 final class HUD {
     static let shared = HUD()

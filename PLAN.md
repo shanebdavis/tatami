@@ -2,7 +2,7 @@
 
 Phased so each phase ends with something Shane runs and validates by hand before the next phase starts. The three risky integrations — menu-bar app lifecycle, global hotkey interception, and Accessibility-driven window positioning — each get their own early phase so they're validated in isolation. Everything after that is pure logic and UI.
 
-## Phase 1 — Menu bar skeleton
+## Phase 1: Menu bar skeleton
 
 A buildable, runnable app that proves the project setup and app lifecycle.
 
@@ -12,7 +12,7 @@ A buildable, runnable app that proves the project setup and app lifecycle.
 
 **Validate:** build & run from Xcode; icon appears top-right; Quit exits cleanly.
 
-## Phase 2 — Global hotkey
+## Phase 2: Global hotkey
 
 Prove we can intercept a system-wide key combination — the thing that rotted in Divvy.
 
@@ -22,7 +22,7 @@ Prove we can intercept a system-wide key combination — the thing that rotted i
 
 **Validate:** press the hotkey while in Safari, iTerm, etc.; HUD appears every time; no permission prompts.
 
-## Phase 3 — Accessibility + window positioning
+## Phase 3: Accessibility + window positioning
 
 Prove we can move other apps' windows — the other risky integration.
 
@@ -32,7 +32,7 @@ Prove we can move other apps' windows — the other risky integration.
 
 **Validate:** grant permission once; hotkey snaps iTerm, Safari, Finder, an Electron app (e.g. Slack/VS Code) to the left half; try on both the MacBook screen and an external display.
 
-## Phase 4 — Grid panel (the core UX)
+## Phase 4: Grid panel (the core UX)
 
 The Divvy experience: hotkey summons a grid, paint a region, window moves there.
 
@@ -44,7 +44,7 @@ The Divvy experience: hotkey summons a grid, paint a region, window moves there.
 
 **Validate:** full daily-driver loop — summon, paint, window lands exactly on the painted region; Escape cancels; repeat rapid-fire.
 
-## Phase 5 — Grid doubling + multi-monitor polish
+## Phase 5: Grid doubling + multi-monitor polish
 
 - `Space` while the panel is open toggles 6×5 ↔ 12×10 (always reopens at base size)
 - Panel appears on the correct screen in all monitor arrangements
@@ -52,7 +52,7 @@ The Divvy experience: hotkey summons a grid, paint a region, window moves there.
 
 **Validate:** doubling toggle feels right; correct behavior on external display above/beside the MacBook.
 
-## Phase 6 — Preset layout shortcuts + settings
+## Phase 6: Preset layout shortcuts + settings
 
 - Settings window (opened from menu bar): list of presets, each with a shortcut recorder and a grid-region picker (same grid UX in "define region" mode)
 - Pressing a preset's shortcut instantly lays out the focused window — no UI shown
@@ -61,7 +61,21 @@ The Divvy experience: hotkey summons a grid, paint a region, window moves there.
 
 **Validate:** define "left ⅔", "right ⅓", "full screen" presets; hammer them all day; restart the app and they survive.
 
-## Phase 7 — Polish & daily-driver hardening
+## Phase 7: Presets in the grid panel
+
+Presets move into the panel, so every common layout is one keypress after the summon hotkey.
+
+- Fixed preset slots: two rows of six under the grid keyed `1`–`9`, `0`, `-`, `=`, plus `F` and `C` in the footer, preloaded with full screen and centered
+- Click an empty slot or press its key, then paint the grid to set it
+- Click a filled slot or press its key to apply; drag onto another slot to swap; hover for a live preview and a clear ×
+- Arrow keys apply built-in halves on that side; ⌘+arrows thirds, ⇧+arrows two thirds, ⌘⇧+arrows five sixths, with an arrow-cluster legend whose thumbnails follow the held modifier
+- Base grid becomes 6×6 (12×12 doubled), shaped like the screen
+- Settings keeps the summon hotkey plus optional per-preset global shortcuts
+- "Show Grid" in the menu bar menu opens the panel
+
+**Validate:** set slots 1, 4, and 9 from the panel (one by click, one by key, one after switching slots mid-define); apply each by key and by click; drag one onto an empty slot and one onto a filled slot; clear and redefine C; each arrow, ⌘+arrow, ⇧+arrow, and ⌘⇧+arrow lands the window on the matching half, third, two thirds, or five sixths, and the legend switches as modifiers are held; restart the app and the slots survive.
+
+## Phase 8: Polish & daily-driver hardening
 
 - Launch at login toggle
 - Base grid dimensions configurable

@@ -35,12 +35,9 @@ enum LayoutEngine {
         )
     }
 
-    /// Instantly applies a grid region to the focused window.
-    static func apply(region: GridRegion, columns: Int, rows: Int) {
+    /// Instantly applies a preset to the focused window.
+    static func apply(_ preset: Preset) {
         guard let target = focusedTarget() else { return }
-        WindowManager.setFrame(
-            region.rect(on: target.screen, columns: columns, rows: rows),
-            of: target.window
-        )
+        WindowManager.setFrame(preset.rect(on: target.screen), of: target.window)
     }
 }

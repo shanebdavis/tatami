@@ -12,7 +12,7 @@ This is not a once-a-day setup chore. It's a rapid-fire, repeated action perform
 
 > **Fast, easy window layout, over and over again** — get the right information on screen the instant it's needed, with near-zero friction and near-zero thought.
 
-[Divvy](https://mizage.com/divvy/) solved this well: summon a grid with a hotkey, paint the region where the focused window should go, done. But Divvy is unmaintained Intel-era code and its OS-level keyboard shortcuts no longer work reliably. This app replicates Divvy's solution in a modern, working, native form — taking cues from Divvy initially, with room to go beyond it later.
+[Divvy](https://mizage.com/divvy/) solved this well: summon a grid with a hotkey, paint the region where the focused window should go, done. But Divvy is unmaintained Intel-era code: its keyboard shortcuts kept breaking, and on macOS 27 it stopped working entirely. This app replicates Divvy's solution in a modern, working, native form — taking cues from Divvy initially, with room to go beyond it later.
 
 ## Goals
 
@@ -37,7 +37,7 @@ A single user-configurable global hotkey summons the **grid panel**, targeting w
 
 - The panel appears on the screen containing the focused window
 - The panel displays the focused app's icon and name (as Divvy does), so it is unambiguous which window will move
-- The panel shows an N×M grid of cells (default 6×5, configurable)
+- The panel shows an N×M grid of cells (default 6×6, configurable), shaped like the screen's visible area so each cell has the screen's proportions
 - **Click-drag** across cells selects a rectangular region; on mouse-up, the focused window is moved/resized to that region and the panel dismisses
 - While dragging, a translucent live preview shows the target frame on the actual screen behind the panel
 - **Escape** or clicking outside the grid dismisses the panel without acting
@@ -45,21 +45,26 @@ A single user-configurable global hotkey summons the **grid panel**, targeting w
 
 ### F2. Grid doubling
 
-While the grid panel is open, a toggle (keypress, e.g. `space`) doubles the grid resolution in both dimensions (6×5 → 12×10) for finer placement. Toggling again returns to the base grid. The doubled state is transient — the panel always opens at the base grid size.
+While the grid panel is open, a toggle (keypress, e.g. `space`) doubles the grid resolution in both dimensions (6×6 → 12×12) for finer placement. Toggling again returns to the base grid. The doubled state is transient — the panel always opens at the base grid size.
 
-### F3. Preset layout shortcuts
+### F3. Preset layouts
 
-Any number of additional global shortcuts, each bound to a **saved grid region**, that lay out the focused window instantly with no UI shown.
+Fourteen **preset slots**, each a saved grid region bound to a key, kept in the grid panel so each common layout is one keypress after the summon hotkey.
 
-- A saved layout is a grid region (e.g. "columns 1–3 of 6, all 5 rows"), **not** absolute pixels — layouts are resolution-independent and apply correctly on any monitor
-- Pressing a preset shortcut resolves the region against the screen containing the focused window and moves it immediately
+- A saved layout is a grid region (e.g. "columns 1–3 of 6, all 6 rows"), **not** absolute pixels. Layouts are resolution-independent and apply correctly on any monitor
+- Slots `1`–`9`, `0`, `-`, `=` sit under the grid as two rows of six thumbnails, lined up with the grid's six columns. Slots `F` and `C` sit in the panel footer. Every slot is always shown, filled or empty
+- `F` (full screen) and `C` (centered, one grid unit in from each edge) come preloaded; like any slot, they can be cleared and redefined
+- With the panel open, pressing a filled slot's key or clicking its thumbnail moves the window and dismisses the panel
+- Pressing an empty slot's key or clicking it arms that slot: the next region painted on the grid is saved there instead of moving the window. Escape backs out
+- Hovering a filled slot previews its region on screen and reveals an × to clear it. Dragging a preset onto another slot swaps the two
+- Built in: with the panel open, the arrow keys apply the half of the screen on that side; ⌘+arrow the third, ⇧+arrow the two thirds, ⌘⇧+arrow the five sixths. The footer lays out the arrow keys like the keyboard's arrow cluster, each with a thumbnail of its layout, beside ⌘ ⅓, ⇧ ⅔, and ⌘⇧ ⅚ cells; holding a modifier lights its cell and updates the thumbnails. Clicking an arrow applies its layout
+- A preset can optionally get its own global shortcut (F4) that applies it instantly with no UI shown
 
 ### F4. Configuration window
 
 Opened from the menu bar icon. Contains:
 
-- **Shortcuts list** — one row per preset: a shortcut recorder control, a thumbnail of the saved grid region, and a delete button. An "add" button creates a new preset
-- **Region picker** — defining/editing a preset's region reuses the same grid-selection UX as the interactive panel (F1), in "define a region" mode
+- **Presets list**: one row per filled slot in key order, with its panel key, a thumbnail of its region, an optional global shortcut recorder, and a clear button. Setting and swapping slots happen in the panel (F3)
 - **General settings** — the summon hotkey (F1), base grid dimensions (rows × columns), launch at login
 
 ### F5. Menu bar presence
@@ -91,9 +96,9 @@ Opened from the menu bar icon. Contains:
 | Module | Responsibility | Est. size |
 |---|---|---|
 | `WindowManager` | AX wrapper: focused window, set frame, coordinate conversion | ~150 lines |
-| `GridPanel` | Overlay panel: grid render, drag-select, double toggle, preview, dismiss | ~300 lines |
+| `GridPanel` | Overlay panel: grid render, drag-select, double toggle, preset slots, preview, dismiss | ~450 lines |
 | `ShortcutStore` | Codable presets, hotkey registration/dispatch | ~100 lines |
-| `SettingsView` | Config window: presets list, recorder controls, region picker | ~250 lines |
+| `SettingsView` | Config window: summon hotkey, presets list with recorder controls | ~100 lines |
 | `App` | `MenuBarExtra` glue, permission onboarding, launch at login | ~50 lines |
 
 ## Milestones
@@ -101,11 +106,9 @@ Opened from the menu bar icon. Contains:
 1. **Spike** — one hardcoded hotkey snaps the focused window to the left half of its screen. Validates permissions, AX, and coordinate math end to end
 2. **MVP** — grid panel with drag-select placement (F1)
 3. **Full grid UX** — double toggle, app icon/name, multi-monitor correctness (F2, FR1–FR3)
-4. **Presets** — saved layouts with custom shortcuts and config UI (F3, F4)
+4. **Presets**: saved layouts in the grid panel, optional global shortcuts, config UI (F3, F4)
 5. **Polish** — permission onboarding, launch at login, stubborn-app retries, animations (F5, FR4, FR5)
 
 ## Open Questions
 
-- Should the grid panel also be summonable per-preset-editing from the settings window, or is the inline picker enough? (Assumed: inline picker reuses the same view)
-- Default base grid: Divvy's default is 6×5 — keep it? (Assumed: yes)
 - Should a second press of the summon hotkey while the panel is open dismiss it? (Assumed: yes)
