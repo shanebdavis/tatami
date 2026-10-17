@@ -12,7 +12,7 @@ This is not a once-a-day setup chore. It's a rapid-fire, repeated action perform
 
 > **Fast, easy window layout, over and over again** — get the right information on screen the instant it's needed, with near-zero friction and near-zero thought.
 
-[Divvy](https://mizage.com/divvy/) solved this well: summon a grid with a hotkey, paint the region where the focused window should go, done. But Divvy is unmaintained Intel-era code and its OS-level keyboard shortcuts no longer work reliably. This app replicates Divvy's solution in a modern, working, native form — taking cues from Divvy initially, with room to go beyond it later.
+[Divvy](https://mizage.com/divvy/) solved this well: summon a grid with a hotkey, paint the region where the focused window should go, done. But Divvy is unmaintained Intel-era code: its keyboard shortcuts kept breaking, and on macOS 27 it stopped working entirely. This app replicates Divvy's solution in a modern, working, native form — taking cues from Divvy initially, with room to go beyond it later.
 
 ## Goals
 
