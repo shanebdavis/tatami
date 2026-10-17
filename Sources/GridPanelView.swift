@@ -49,9 +49,8 @@ struct GridPanelView: View {
             }
             grid
             PresetSlotsView(
-                width: gridWidth,
+                slotSize: slotSize,
                 spacing: cellSpacing,
-                screenAspect: screenAspect,
                 highlightsNextSlot: controller.definingPreset,
                 onHover: controller.preview,
                 onApply: controller.apply
@@ -62,18 +61,33 @@ struct GridPanelView: View {
         .background(RoundedRectangle(cornerRadius: 18).fill(.regularMaterial))
     }
 
+    private var slotSize: CGSize {
+        Slot.size(rowWidth: gridWidth, spacing: cellSpacing, screenAspect: screenAspect)
+    }
+
+    /// Arrow-key legend on the left; hint and Add Preset on the right.
     private var footer: some View {
         let defining = controller.definingPreset
-        return HStack {
-            Text(defining ? "Drag on the grid to define the preset" : "space: finer grid · arrows: ½ ⌘⅓ ⇧⅔")
-                .font(.caption)
-                .foregroundStyle(defining ? Color.accentColor : .secondary)
+        return HStack(alignment: .bottom) {
+            ArrowKeysView(
+                slotSize: slotSize,
+                spacing: cellSpacing,
+                modifiers: controller.modifiers,
+                onHover: controller.preview,
+                onApply: controller.apply
+            )
             Spacer()
-            Button(defining ? "Cancel" : "Add Preset", systemImage: defining ? "xmark" : "plus") {
-                controller.toggleDefiningPreset()
+            VStack(alignment: .trailing, spacing: 8) {
+                Text(defining ? "Drag on the grid to define the preset" : "space: finer grid")
+                    .font(.caption)
+                    .foregroundStyle(defining ? Color.accentColor : .secondary)
+                    .multilineTextAlignment(.trailing)
+                Button(defining ? "Cancel" : "Add Preset", systemImage: defining ? "xmark" : "plus") {
+                    controller.toggleDefiningPreset()
+                }
+                .controlSize(.small)
+                .disabled(!defining && store.isFull)
             }
-            .controlSize(.small)
-            .disabled(!defining && store.isFull)
         }
         .frame(width: gridWidth)
     }

@@ -19,9 +19,14 @@ final class GridPanelController: ObservableObject {
     /// preset instead of moving the window.
     @Published private(set) var definingPreset = false
 
+    /// Modifier keys held right now, tracked while the panel is open so
+    /// the arrow-key legend can show what ⌘ and ⇧ do.
+    @Published private(set) var modifiers: NSEvent.ModifierFlags = []
+
     private var panel: GridPanel?
     private var previewWindow: NSWindow?
     private var target: LayoutEngine.Target?
+    private var modifiersMonitor: Any?
 
     var columns: Int { doubled ? baseColumns * 2 : baseColumns }
     var rows: Int { doubled ? baseRows * 2 : baseRows }
@@ -39,6 +44,11 @@ final class GridPanelController: ObservableObject {
         self.target = target
         doubled = false
         definingPreset = false
+        modifiers = NSEvent.modifierFlags
+        modifiersMonitor = NSEvent.addLocalMonitorForEvents(matching: .flagsChanged) { [weak self] event in
+            self?.modifiers = event.modifierFlags
+            return event
+        }
 
         let area = target.screen.visibleFrame
         let hosting = NSHostingView(rootView: GridPanelView(
@@ -79,6 +89,10 @@ final class GridPanelController: ObservableObject {
         guard let panel else { return }
         self.panel = nil
         panel.close()
+        if let modifiersMonitor {
+            NSEvent.removeMonitor(modifiersMonitor)
+            self.modifiersMonitor = nil
+        }
         previewWindow?.close()
         previewWindow = nil
         target = nil

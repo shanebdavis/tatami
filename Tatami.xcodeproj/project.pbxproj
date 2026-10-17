@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		05507049BEEFBB9E1C2F759F /* GridRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E10B86051D7EEF50F6BABA /* GridRegion.swift */; };
+		4A492BD991D16AEC938FE452 /* ArrowKeysView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41A9895FFCD4F6BE9A04CF2 /* ArrowKeysView.swift */; };
 		770A98DE68E420EBECB3F018 /* Shortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197ADE0896C608F1274BB07D /* Shortcuts.swift */; };
 		7AF894E9A39C291839CBABD8 /* TatamiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5E0B5C53363C65188E3B52 /* TatamiApp.swift */; };
 		806944012410E5A91F3D3F43 /* GridPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF63AE98FA660D69BFE7D47 /* GridPanelView.swift */; };
@@ -19,6 +20,7 @@
 		D422BFC2ECF0B3B5B968A451 /* PresetThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 640C39A66A14083FA611F68E /* PresetThumbnail.swift */; };
 		D8FCE09E3D5D5CD2884F5354 /* PresetSlotsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D482AA7CFC9A84D8E33DF4 /* PresetSlotsView.swift */; };
 		EDDA0444887A1F6CBED42C92 /* EdgePresets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D6D0830962B9A7830DF7C8 /* EdgePresets.swift */; };
+		FB28F37136D49ACA5AAEBBC7 /* Slot.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE50F13E9D956C6DC1391EC7 /* Slot.swift */; };
 		FD4B0A1CD42F3BB86DA59234 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741D98006F0B1DEE3D1F4C72 /* SettingsView.swift */; };
 		FF3961C8B94A0E92A5458D33 /* PresetStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605F4C314B6D98AB7B7C4FCE /* PresetStore.swift */; };
 /* End PBXBuildFile section */
@@ -36,6 +38,8 @@
 		741D98006F0B1DEE3D1F4C72 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		80519AD547085D61C63B335E /* GridPanelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridPanelController.swift; sourceTree = "<group>"; };
 		9DF63AE98FA660D69BFE7D47 /* GridPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridPanelView.swift; sourceTree = "<group>"; };
+		AE50F13E9D956C6DC1391EC7 /* Slot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slot.swift; sourceTree = "<group>"; };
+		B41A9895FFCD4F6BE9A04CF2 /* ArrowKeysView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrowKeysView.swift; sourceTree = "<group>"; };
 		BE5DDD904E335F119AFD52EF /* HUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUD.swift; sourceTree = "<group>"; };
 		C6D482AA7CFC9A84D8E33DF4 /* PresetSlotsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetSlotsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -55,6 +59,7 @@
 		3C25564AEBE8E65B31A25EA4 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				B41A9895FFCD4F6BE9A04CF2 /* ArrowKeysView.swift */,
 				47D6D0830962B9A7830DF7C8 /* EdgePresets.swift */,
 				80519AD547085D61C63B335E /* GridPanelController.swift */,
 				9DF63AE98FA660D69BFE7D47 /* GridPanelView.swift */,
@@ -66,6 +71,7 @@
 				640C39A66A14083FA611F68E /* PresetThumbnail.swift */,
 				741D98006F0B1DEE3D1F4C72 /* SettingsView.swift */,
 				197ADE0896C608F1274BB07D /* Shortcuts.swift */,
+				AE50F13E9D956C6DC1391EC7 /* Slot.swift */,
 				6A5E0B5C53363C65188E3B52 /* TatamiApp.swift */,
 				6BC4EAA5F684A7C803A4DE9B /* WindowManager.swift */,
 			);
@@ -152,6 +158,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A492BD991D16AEC938FE452 /* ArrowKeysView.swift in Sources */,
 				EDDA0444887A1F6CBED42C92 /* EdgePresets.swift in Sources */,
 				92F22F34230E37BA02ACE574 /* GridPanelController.swift in Sources */,
 				806944012410E5A91F3D3F43 /* GridPanelView.swift in Sources */,
@@ -163,6 +170,7 @@
 				D422BFC2ECF0B3B5B968A451 /* PresetThumbnail.swift in Sources */,
 				FD4B0A1CD42F3BB86DA59234 /* SettingsView.swift in Sources */,
 				770A98DE68E420EBECB3F018 /* Shortcuts.swift in Sources */,
+				FB28F37136D49ACA5AAEBBC7 /* Slot.swift in Sources */,
 				7AF894E9A39C291839CBABD8 /* TatamiApp.swift in Sources */,
 				AAE9B71577DDB5EFCA5A94E4 /* WindowManager.swift in Sources */,
 			);

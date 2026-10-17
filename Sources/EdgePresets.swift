@@ -1,12 +1,18 @@
 import AppKit
 
 extension Preset {
-    /// The built-in layout an arrow key applies in the grid panel: the half
-    /// (no modifier), third (⌘), or two thirds (⇧) of the screen on the
-    /// arrow's side. Nil for any other key or modifier combination.
+    /// The built-in layout `event` applies in the grid panel, if it's an
+    /// arrow key. See `edge(_:modifiers:)`.
     static func edge(for event: NSEvent) -> Preset? {
+        event.specialKey.flatMap { edge($0, modifiers: event.modifierFlags) }
+    }
+
+    /// The built-in layout an arrow key applies: the half (no modifier),
+    /// third (⌘), or two thirds (⇧) of the screen on the arrow's side.
+    /// Other modifiers are ignored. Nil for non-arrow keys or ⌘⇧ together.
+    static func edge(_ arrow: NSEvent.SpecialKey, modifiers: NSEvent.ModifierFlags) -> Preset? {
         let share: Int, parts: Int
-        switch event.modifierFlags.intersection([.shift, .control, .option, .command]) {
+        switch modifiers.intersection([.shift, .command]) {
         case []: (share, parts) = (1, 2)
         case .command: (share, parts) = (1, 3)
         case .shift: (share, parts) = (2, 3)
@@ -14,7 +20,7 @@ extension Preset {
         }
         let leading = 0...(share - 1)
         let trailing = (parts - share)...(parts - 1)
-        switch event.specialKey {
+        switch arrow {
         case .leftArrow: return band(leading, of: parts, vertical: false)
         case .rightArrow: return band(trailing, of: parts, vertical: false)
         case .upArrow: return band(leading, of: parts, vertical: true)

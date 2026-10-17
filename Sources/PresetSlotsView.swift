@@ -5,10 +5,8 @@ import SwiftUI
 /// apply it, hover to preview it and reveal its delete button, drag to
 /// reorder.
 struct PresetSlotsView: View {
-    let width: CGFloat
+    let slotSize: CGSize
     let spacing: CGFloat
-    /// Shapes each slot's picture like the screen, matching the grid.
-    let screenAspect: CGFloat
     /// Highlights the empty slot the next added preset lands in.
     let highlightsNextSlot: Bool
     let onHover: (Preset?) -> Void
@@ -29,14 +27,8 @@ struct PresetSlotsView: View {
     }
 
     private let keys = PresetStore.slotKeys
-    private let perRow = 6
+    private let perRow = Slot.perRow
     private let space = NamedCoordinateSpace.named("slots")
-
-    private var slotSize: CGSize {
-        let slotWidth = (width - CGFloat(perRow - 1) * spacing) / CGFloat(perRow)
-        let pictureHeight = (slotWidth - 2 * slotPadding) / screenAspect
-        return CGSize(width: slotWidth, height: pictureHeight + slotLabelHeight + 2 * slotPadding)
-    }
 
     var body: some View {
         let presets = Array(store.presets.prefix(keys.count))
@@ -51,7 +43,7 @@ struct PresetSlotsView: View {
             }
         }
         .frame(
-            width: width,
+            width: CGFloat(perRow) * (slotSize.width + spacing) - spacing,
             height: CGFloat(rowCount) * (slotSize.height + spacing) - spacing,
             alignment: .topLeading
         )
@@ -80,10 +72,7 @@ struct PresetSlotsView: View {
             PresetThumbnail(preset: preset)
         }
         .frame(width: slotSize.width, height: slotSize.height)
-        .background(
-            RoundedRectangle(cornerRadius: 6)
-                .fill(Color.primary.opacity(isHovered ? 0.16 : 0.06))
-        )
+        .slotBackground(highlighted: isHovered)
         .shadow(radius: dragOrigin == nil ? 0 : 6)
         // Gesture before the overlay so clicks on the delete button never
         // reach it; hover after, so the button keeps the tile hovered.
@@ -153,27 +142,6 @@ struct PresetSlotsView: View {
         let col = min(max(Int(point.x / (slotSize.width + spacing)), 0), perRow - 1)
         let row = min(max(Int(point.y / (slotSize.height + spacing)), 0), keys.count / perRow - 1)
         return row * perRow + col
-    }
-}
-
-private let slotPadding: CGFloat = 4
-private let slotLabelHeight: CGFloat = 16
-
-/// A slot's picture (preset thumbnail or empty placeholder) above its key.
-/// The picture fills whatever height the label and padding leave it.
-private struct SlotLayout<Picture: View>: View {
-    let key: String
-    @ViewBuilder let picture: Picture
-
-    var body: some View {
-        VStack(spacing: 0) {
-            picture
-            Text(key)
-                .font(.caption.monospaced().weight(.medium))
-                .foregroundStyle(.secondary)
-                .frame(height: slotLabelHeight)
-        }
-        .padding(slotPadding)
     }
 }
 
