@@ -18,6 +18,7 @@
 		AAE9B71577DDB5EFCA5A94E4 /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BC4EAA5F684A7C803A4DE9B /* WindowManager.swift */; };
 		D422BFC2ECF0B3B5B968A451 /* PresetThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 640C39A66A14083FA611F68E /* PresetThumbnail.swift */; };
 		D8FCE09E3D5D5CD2884F5354 /* PresetSlotsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D482AA7CFC9A84D8E33DF4 /* PresetSlotsView.swift */; };
+		EDDA0444887A1F6CBED42C92 /* EdgePresets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D6D0830962B9A7830DF7C8 /* EdgePresets.swift */; };
 		FD4B0A1CD42F3BB86DA59234 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741D98006F0B1DEE3D1F4C72 /* SettingsView.swift */; };
 		FF3961C8B94A0E92A5458D33 /* PresetStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605F4C314B6D98AB7B7C4FCE /* PresetStore.swift */; };
 /* End PBXBuildFile section */
@@ -26,6 +27,7 @@
 		00E10B86051D7EEF50F6BABA /* GridRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridRegion.swift; sourceTree = "<group>"; };
 		197ADE0896C608F1274BB07D /* Shortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shortcuts.swift; sourceTree = "<group>"; };
 		1F1DC872C75B96AAEBF30600 /* Tatami.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tatami.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		47D6D0830962B9A7830DF7C8 /* EdgePresets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgePresets.swift; sourceTree = "<group>"; };
 		58528A9452D0815E1371CD52 /* LayoutEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutEngine.swift; sourceTree = "<group>"; };
 		605F4C314B6D98AB7B7C4FCE /* PresetStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetStore.swift; sourceTree = "<group>"; };
 		640C39A66A14083FA611F68E /* PresetThumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetThumbnail.swift; sourceTree = "<group>"; };
@@ -53,6 +55,7 @@
 		3C25564AEBE8E65B31A25EA4 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				47D6D0830962B9A7830DF7C8 /* EdgePresets.swift */,
 				80519AD547085D61C63B335E /* GridPanelController.swift */,
 				9DF63AE98FA660D69BFE7D47 /* GridPanelView.swift */,
 				00E10B86051D7EEF50F6BABA /* GridRegion.swift */,
@@ -149,6 +152,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDDA0444887A1F6CBED42C92 /* EdgePresets.swift in Sources */,
 				92F22F34230E37BA02ACE574 /* GridPanelController.swift in Sources */,
 				806944012410E5A91F3D3F43 /* GridPanelView.swift in Sources */,
 				05507049BEEFBB9E1C2F759F /* GridRegion.swift in Sources */,

@@ -61,7 +61,7 @@ final class GridPanelController: ObservableObject {
         panel.level = .statusBar
         panel.collectionBehavior = [.canJoinAllSpaces, .transient]
         panel.contentView = hosting
-        panel.onKey = { [weak self] key in self?.handleKey(key) ?? false }
+        panel.onKey = { [weak self] event in self?.handleKey(event) ?? false }
         panel.onEscape = { [weak self] in self?.cancel() }
         panel.onResignKey = { [weak self] in self?.dismiss() }
 
@@ -116,11 +116,12 @@ final class GridPanelController: ObservableObject {
         Preset(region: region, columns: columns, rows: rows)
     }
 
-    private func handleKey(_ key: String) -> Bool {
+    private func handleKey(_ event: NSEvent) -> Bool {
+        let key = event.charactersIgnoringModifiers ?? ""
         if key == " " {
             doubled.toggle()
             preview(nil)
-        } else if let preset = PresetStore.shared.preset(forKey: key) {
+        } else if let preset = Preset.edge(for: event) ?? PresetStore.shared.preset(forKey: key) {
             apply(preset)
         } else {
             return false
@@ -170,11 +171,12 @@ final class GridPanelController: ObservableObject {
 }
 
 /// Borderless panels can't become key by default; the grid panel must, so it
-/// can receive keys (space, preset slots, Escape via cancelOperation) and
-/// dismiss on click-away (via resignKey), all without activating the app.
+/// can receive keys (space, arrows, preset slots, Escape via
+/// cancelOperation) and dismiss on click-away (via resignKey), all without
+/// activating the app.
 private final class GridPanel: NSPanel {
     /// Returns true when the key was handled.
-    var onKey: ((String) -> Bool)?
+    var onKey: ((NSEvent) -> Bool)?
     var onEscape: (() -> Void)?
     var onResignKey: (() -> Void)?
 
@@ -184,8 +186,13 @@ private final class GridPanel: NSPanel {
         onEscape?()
     }
 
+    /// ⌘-key events arrive here before keyDown.
+    override func performKeyEquivalent(with event: NSEvent) -> Bool {
+        onKey?(event) == true || super.performKeyEquivalent(with: event)
+    }
+
     override func keyDown(with event: NSEvent) {
-        if let key = event.charactersIgnoringModifiers, onKey?(key) == true { return }
+        if onKey?(event) == true { return }
         super.keyDown(with: event)
     }
 

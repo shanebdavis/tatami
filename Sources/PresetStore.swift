@@ -30,15 +30,6 @@ final class PresetStore: ObservableObject {
     /// Grid panel keys in slot order. Their count caps the preset list.
     static let slotKeys = "1234567890-=".map(String.init)
 
-    /// Built-in halves the grid panel applies with the arrow keys: one cell
-    /// of a 1×2 or 2×1 grid.
-    private static let arrowPresets = [
-        arrowKey(.upArrow): half(col: 0, row: 0, columns: 1, rows: 2),
-        arrowKey(.downArrow): half(col: 0, row: 1, columns: 1, rows: 2),
-        arrowKey(.leftArrow): half(col: 0, row: 0, columns: 2, rows: 1),
-        arrowKey(.rightArrow): half(col: 1, row: 0, columns: 2, rows: 1),
-    ]
-
     private static let defaultsKey = "presets"
 
     @Published private(set) var presets: [Preset] {
@@ -84,21 +75,10 @@ final class PresetStore: ObservableObject {
         presets = reordered
     }
 
-    /// The preset `key` applies in the grid panel: a built-in half for the
-    /// arrow keys, otherwise the preset in that key's slot, if filled.
+    /// The preset in the slot for `key`, if that slot is filled.
     func preset(forKey key: String) -> Preset? {
-        if let half = Self.arrowPresets[key] { return half }
         guard let slot = Self.slotKeys.firstIndex(of: key), slot < presets.count else { return nil }
         return presets[slot]
-    }
-
-    private static func arrowKey(_ key: NSEvent.SpecialKey) -> String {
-        String(key.unicodeScalar)
-    }
-
-    private static func half(col: Int, row: Int, columns: Int, rows: Int) -> Preset {
-        let cell = GridCell(col: col, row: row)
-        return Preset(region: GridRegion(from: cell, to: cell), columns: columns, rows: rows)
     }
 
     private func register(_ preset: Preset) {

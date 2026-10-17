@@ -65,7 +65,7 @@ struct GridPanelView: View {
     private var footer: some View {
         let defining = controller.definingPreset
         return HStack {
-            Text(defining ? "Drag on the grid to define the preset" : "space: finer grid · arrows: halves")
+            Text(defining ? "Drag on the grid to define the preset" : "space: finer grid · arrows: ½ ⌘⅓ ⇧⅔")
                 .font(.caption)
                 .foregroundStyle(defining ? Color.accentColor : .secondary)
             Spacer()

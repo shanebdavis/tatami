@@ -56,7 +56,7 @@ Up to twelve **saved grid regions**, kept in the grid panel so each common layou
 - Slots are keyed `1`–`9`, `0`, `-`, `=` in order. With the panel open, pressing a slot's key or clicking its thumbnail moves the window and dismisses the panel
 - **Add Preset** at the bottom of the panel puts the grid in define mode: the next painted region is saved to the next free slot instead of moving the window. Escape backs out of define mode
 - Dragging a thumbnail reorders the presets, which renumbers their keys. Hovering one previews its region on screen and reveals an × to delete it
-- Built in: with the panel open, the arrow keys apply the top, bottom, left, and right halves of the screen
+- Built in: with the panel open, the arrow keys apply the half of the screen on that side; ⌘+arrow the third, ⇧+arrow the two thirds
 - A preset can optionally get its own global shortcut (F4) that applies it instantly with no UI shown
 
 ### F4. Configuration window
