@@ -7,6 +7,9 @@ struct GridPanelView: View {
     @ObservedObject var controller: GridPanelController
     let appIcon: NSImage?
     let appName: String
+    /// Width over height of the target screen's visible area. The grid
+    /// takes this shape, so its cells match the screen's proportions.
+    let screenAspect: CGFloat
 
     @ObservedObject private var store = PresetStore.shared
     @State private var startCell: GridCell?
@@ -17,11 +20,15 @@ struct GridPanelView: View {
     private let gridWidth: CGFloat = 342
     private let cellSpacing: CGFloat = 6
 
+    private var gridHeight: CGFloat { gridWidth / screenAspect }
     private var columns: Int { controller.columns }
     private var rows: Int { controller.rows }
 
-    private var cellSize: CGFloat {
-        (gridWidth - CGFloat(columns - 1) * cellSpacing) / CGFloat(columns)
+    private var cellSize: CGSize {
+        CGSize(
+            width: (gridWidth - CGFloat(columns - 1) * cellSpacing) / CGFloat(columns),
+            height: (gridHeight - CGFloat(rows - 1) * cellSpacing) / CGFloat(rows)
+        )
     }
 
     private var selection: GridRegion? {
@@ -44,6 +51,7 @@ struct GridPanelView: View {
             PresetSlotsView(
                 width: gridWidth,
                 spacing: cellSpacing,
+                screenAspect: screenAspect,
                 highlightsNextSlot: controller.definingPreset,
                 onHover: controller.preview,
                 onApply: controller.apply
@@ -71,9 +79,7 @@ struct GridPanelView: View {
     }
 
     private var grid: some View {
-        let gridHeight = CGFloat(rows) * (cellSize + cellSpacing) - cellSpacing
-
-        return VStack(spacing: cellSpacing) {
+        VStack(spacing: cellSpacing) {
             ForEach(0..<rows, id: \.self) { row in
                 HStack(spacing: cellSpacing) {
                     ForEach(0..<columns, id: \.self) { col in
@@ -84,7 +90,7 @@ struct GridPanelView: View {
                                 RoundedRectangle(cornerRadius: 5)
                                     .strokeBorder(Color.primary.opacity(0.25), lineWidth: 1)
                             )
-                            .frame(width: cellSize, height: cellSize)
+                            .frame(width: cellSize.width, height: cellSize.height)
                     }
                 }
             }
@@ -95,9 +101,9 @@ struct GridPanelView: View {
             DragGesture(minimumDistance: 0)
                 .onChanged { drag in
                     if startCell == nil {
-                        startCell = cell(at: drag.startLocation, gridHeight: gridHeight)
+                        startCell = cell(at: drag.startLocation)
                     }
-                    currentCell = cell(at: drag.location, gridHeight: gridHeight)
+                    currentCell = cell(at: drag.location)
                     controller.selectionChanged(selection)
                 }
                 .onEnded { _ in
@@ -110,11 +116,11 @@ struct GridPanelView: View {
 
     /// Maps a point in grid-local coordinates to a cell, clamped to the grid
     /// so drags that wander outside still track the nearest edge cell.
-    private func cell(at point: CGPoint, gridHeight: CGFloat) -> GridCell {
+    private func cell(at point: CGPoint) -> GridCell {
         let x = min(max(point.x, 0), gridWidth - 1)
         let y = min(max(point.y, 0), gridHeight - 1)
-        let col = min(Int(x / (cellSize + cellSpacing)), columns - 1)
-        let row = min(Int(y / (cellSize + cellSpacing)), rows - 1)
+        let col = min(Int(x / (cellSize.width + cellSpacing)), columns - 1)
+        let row = min(Int(y / (cellSize.height + cellSpacing)), rows - 1)
         return GridCell(col: col, row: row)
     }
 }

@@ -37,7 +37,7 @@ A single user-configurable global hotkey summons the **grid panel**, targeting w
 
 - The panel appears on the screen containing the focused window
 - The panel displays the focused app's icon and name (as Divvy does), so it is unambiguous which window will move
-- The panel shows an N×M grid of cells (default 6×6, configurable)
+- The panel shows an N×M grid of cells (default 6×6, configurable), shaped like the screen's visible area so each cell has the screen's proportions
 - **Click-drag** across cells selects a rectangular region; on mouse-up, the focused window is moved/resized to that region and the panel dismisses
 - While dragging, a translucent live preview shows the target frame on the actual screen behind the panel
 - **Escape** or clicking outside the grid dismisses the panel without acting

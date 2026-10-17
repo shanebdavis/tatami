@@ -30,6 +30,10 @@ private struct MenuContent: View {
 
     var body: some View {
         Text("Tatami v0.1 (Phase 7)")
+        Button("Show Grid") {
+            GridPanelController.shared.summon()
+        }
+        .globalKeyboardShortcut(.summonGrid)
         Button("Settings…") {
             // Accessory apps (no Dock icon) don't come forward on their own;
             // activate so the settings window isn't buried.

@@ -7,6 +7,8 @@ import SwiftUI
 struct PresetSlotsView: View {
     let width: CGFloat
     let spacing: CGFloat
+    /// Shapes each slot's picture like the screen, matching the grid.
+    let screenAspect: CGFloat
     /// Highlights the empty slot the next added preset lands in.
     let highlightsNextSlot: Bool
     let onHover: (Preset?) -> Void
@@ -32,7 +34,8 @@ struct PresetSlotsView: View {
 
     private var slotSize: CGSize {
         let slotWidth = (width - CGFloat(perRow - 1) * spacing) / CGFloat(perRow)
-        return CGSize(width: slotWidth, height: slotWidth + 6)
+        let pictureHeight = (slotWidth - 2 * slotPadding) / screenAspect
+        return CGSize(width: slotWidth, height: pictureHeight + slotLabelHeight + 2 * slotPadding)
     }
 
     var body: some View {
@@ -153,19 +156,24 @@ struct PresetSlotsView: View {
     }
 }
 
+private let slotPadding: CGFloat = 4
+private let slotLabelHeight: CGFloat = 16
+
 /// A slot's picture (preset thumbnail or empty placeholder) above its key.
+/// The picture fills whatever height the label and padding leave it.
 private struct SlotLayout<Picture: View>: View {
     let key: String
     @ViewBuilder let picture: Picture
 
     var body: some View {
-        VStack(spacing: 2) {
+        VStack(spacing: 0) {
             picture
             Text(key)
                 .font(.caption.monospaced().weight(.medium))
                 .foregroundStyle(.secondary)
+                .frame(height: slotLabelHeight)
         }
-        .padding(4)
+        .padding(slotPadding)
     }
 }
 

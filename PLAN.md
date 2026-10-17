@@ -69,8 +69,9 @@ Presets move into the panel, so every common layout is one keypress after the su
 - **Add Preset** button: paint a region on the grid to save it to the next free slot
 - Click a thumbnail or press its key to apply; drag to reorder; hover for a live preview and a delete ×
 - Arrow keys apply built-in halves: top, bottom, left, right
-- Base grid becomes 6×6 (12×12 doubled)
+- Base grid becomes 6×6 (12×12 doubled), shaped like the screen
 - Settings keeps the summon hotkey plus optional per-preset global shortcuts
+- "Show Grid" in the menu bar menu opens the panel
 
 **Validate:** add "left ⅔", "right ⅓", "full screen" from the panel; apply each by key and by click; drag to reorder and confirm the keys follow; delete one; each arrow key lands the window on the matching half; restart the app and the presets survive.
 

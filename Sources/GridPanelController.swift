@@ -40,10 +40,12 @@ final class GridPanelController: ObservableObject {
         doubled = false
         definingPreset = false
 
+        let area = target.screen.visibleFrame
         let hosting = NSHostingView(rootView: GridPanelView(
             controller: self,
             appIcon: target.appIcon,
-            appName: target.appName
+            appName: target.appName,
+            screenAspect: area.width / area.height
         ))
         hosting.frame.size = hosting.fittingSize
 
@@ -63,7 +65,6 @@ final class GridPanelController: ObservableObject {
         panel.onEscape = { [weak self] in self?.cancel() }
         panel.onResignKey = { [weak self] in self?.dismiss() }
 
-        let area = target.screen.visibleFrame
         panel.setFrameOrigin(NSPoint(
             x: area.midX - hosting.frame.width / 2,
             y: area.midY - hosting.frame.height / 2
