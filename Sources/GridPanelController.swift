@@ -132,6 +132,11 @@ final class GridPanelController: ObservableObject {
         dismiss()
     }
 
+    /// Size in points the window would take if `region` were applied.
+    func size(of region: GridRegion) -> CGSize? {
+        target.map { layout(region).rect(on: $0.screen).size }
+    }
+
     /// The region painted on the current grid, as a preset.
     private func layout(_ region: GridRegion) -> Preset {
         Preset(region: region, columns: columns, rows: rows)

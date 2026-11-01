@@ -57,6 +57,9 @@ struct GridPanelView: View {
         .coordinateSpace(SlotDrag.space)
         .padding(24)
         .background(RoundedRectangle(cornerRadius: 18).fill(.regularMaterial))
+        // Dragging the background moves the panel; the grid and slots have
+        // their own gestures, which take priority.
+        .gesture(WindowDragGesture())
     }
 
     private var slotSize: CGSize {
@@ -144,6 +147,7 @@ struct GridPanelView: View {
             }
         }
         .frame(width: gridWidth, height: gridHeight)
+        .overlay(alignment: .topLeading) { selectionSize }
         .contentShape(Rectangle())
         .gesture(
             DragGesture(minimumDistance: 0)
@@ -160,6 +164,28 @@ struct GridPanelView: View {
                     currentCell = nil
                 }
         )
+    }
+
+    /// While painting, the resulting window size in points, centered on the
+    /// selection.
+    @ViewBuilder private var selectionSize: some View {
+        if let selection, let size = controller.size(of: selection) {
+            let stepX = cellSize.width + cellSpacing
+            let stepY = cellSize.height + cellSpacing
+            let center = CGPoint(
+                x: (CGFloat(selection.minCol + selection.maxCol + 1) * stepX - cellSpacing) / 2,
+                y: (CGFloat(selection.minRow + selection.maxRow + 1) * stepY - cellSpacing) / 2
+            )
+            Text("\(Int(size.width.rounded())) × \(Int(size.height.rounded()))")
+                .font(.callout.weight(.semibold).monospacedDigit())
+                .foregroundStyle(.white)
+                .fixedSize()
+                .padding(.horizontal, 8)
+                .padding(.vertical, 3)
+                .background(.black.opacity(0.65), in: Capsule())
+                .position(center)
+                .allowsHitTesting(false)
+        }
     }
 
     /// Maps a point in grid-local coordinates to a cell, clamped to the grid

@@ -61,11 +61,31 @@ enum WindowManager {
         return cocoaRect(fromAX: CGRect(origin: position, size: size))
     }
 
-    /// Moves/resizes a window to `frame` (Cocoa coordinates).
+    /// Moves/resizes a window to `frame` (Cocoa coordinates), instantly.
     static func setFrame(_ frame: CGRect, of window: AXUIElement) {
         let axFrame = axRect(fromCocoa: frame)
         var position = axFrame.origin
         var size = axFrame.size
+
+        // Apps with AXEnhancedUserInterface on (Chrome, Electron, and any app
+        // while VoiceOver runs) animate AX frame changes, so the size and
+        // position sets below race each other mid-animation. Turning it off
+        // for the duration makes each set land immediately.
+        var pid: pid_t = 0
+        AXUIElementGetPid(window, &pid)
+        let app = AXUIElementCreateApplication(pid)
+        let enhancedUI = "AXEnhancedUserInterface" as CFString
+        var enhancedValue: CFTypeRef?
+        let wasEnhanced = AXUIElementCopyAttributeValue(app, enhancedUI, &enhancedValue) == .success
+            && (enhancedValue as? Bool) == true
+        if wasEnhanced {
+            AXUIElementSetAttributeValue(app, enhancedUI, kCFBooleanFalse)
+        }
+        defer {
+            if wasEnhanced {
+                AXUIElementSetAttributeValue(app, enhancedUI, kCFBooleanTrue)
+            }
+        }
 
         // Size first, then position, then size again: apps with minimum
         // sizes or self-managed layouts (Electron, some pro apps) can clamp
